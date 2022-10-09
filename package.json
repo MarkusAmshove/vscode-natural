@@ -1,0 +1,102 @@
+{
+  "name": "vscode-natural",
+  "displayName": "vscode-natural",
+  "description": "Language Server Client for Natural driven by natls",
+  "version": "0.2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markusamshove/vscode-natural"
+  },
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.59.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "activationEvents": [
+    "onLanguage:natural",
+    "workspaceContains:.natural"
+  ],
+  "dependencies": {
+    "vscode-languageclient": "^8.0.0"
+  },
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "natural",
+        "aliases": [
+            "natural"
+        ],
+        "extensions": [
+            ".NSN",
+            ".NSL",
+            ".NSP",
+            ".NSS",
+            ".NSA",
+            ".NSC",
+            ".NS7",
+            ".NSG"
+        ],
+        "configuration": "./natural/natural.configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+          "language": "natural",
+          "scopeName": "source.natural",
+          "path": "./natural/Natural.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "title": "Natural Language Server",
+      "properties": {
+        "natls.overwrite.java_path": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Path to Java executable to launch the Language Server with instead of the bundled one."
+        },
+        "natls.server_path": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Path to the Language Server jar instead of the bundled one."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.59.0",
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "14.x",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
+    "eslint": "^8.24.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.0.0",
+    "typescript": "^4.8.4",
+    "ts-loader": "^9.4.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "@vscode/test-electron": "^2.1.5"
+  }
+}
