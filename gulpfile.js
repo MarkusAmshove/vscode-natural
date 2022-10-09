@@ -5,6 +5,7 @@ const fetch = require('node-fetch');
 const download = require('gulp-download');
 const decompress = require('gulp-decompress');
 const {version} = require('./package.json');
+const argv = require('yargs').argv
 
 const JAVA_VERSION = '17';
 
@@ -32,6 +33,9 @@ gulp.task('download-jre', gulp.series('clean-jre', async function (done) {
 		'win32': 'win32-x86_64'
 	};
 
+	let platform = argv.platform ?? process.platform;
+	console.log(`JRE platform is: ${platform}`);
+
 	const justJManifestUrl = `https://download.eclipse.org/justj/jres/${JAVA_VERSION}/downloads/latest/justj.manifest`;
 	const manifest = await (await fetch(justJManifestUrl)).text();
 
@@ -40,7 +44,7 @@ gulp.task('download-jre', gulp.series('clean-jre', async function (done) {
 		return;
 	}
 
-	const javaPlatform = platformMap[process.platform];
+	const javaPlatform = platformMap[platform];
 	const list = manifest.split(/\r?\n/);
 	const jreIdentifier = list.find((jreIdentifier) => {
 		return jreIdentifier.includes("org.eclipse.justj.openjdk.hotspot.jre.full.stripped")

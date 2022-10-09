@@ -1,0 +1,33 @@
+on:
+  push:
+    tags:
+      - "v*"
+
+name: Deploy Extension
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Release Extension
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Build
+        run: npm ci
+
+      - name: Downlaod Language Server
+        run: npx gulp download-server
+
+      - name: Downlaod JRE Windows
+        run: npx gulp download-jre --platform win32
+
+      - name: Build extension for Windows
+        run: npx vsce package --out vscode-natural-windows.vsix
+
+      - name: Downlaod JRE
+        run: npx gulp download-jre --platform linux
+
+      - name: Build extension for Linux
+        run: npx vsce package --out vscode-natural-linux.vsix
