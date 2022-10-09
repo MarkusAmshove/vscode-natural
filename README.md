@@ -1,5 +1,7 @@
 # VSCode Natural Language Client
 
+[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/markusamshove.vscode-natural?color=%2300cc00&label=marketplace%20version)](https://marketplace.visualstudio.com/items?itemName=markusamshove.vscode-natural)
+
 Language Client implementation for [Natural Language Server (natls)](https://github.com/markusamshove/natls).
 
 ## Versioning
