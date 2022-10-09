@@ -34,3 +34,6 @@ jobs:
 
       - name: Build extension for Linux
         run: npx vsce package --out vscode-natural-linux.vsix
+
+      - name: Publish extensions
+        run: npx vsce publish --pat ${{ secrets.VS_MARKETPLACE_TOKEN }} --packagePath vscode-natural-*.vsix
