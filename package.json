@@ -3,6 +3,7 @@
   "displayName": "vscode-natural",
   "description": "Language Server Client for Natural driven by natls",
   "version": "0.2.0",
+  "publisher": "MarkusAmshove",
   "repository": {
     "type": "git",
     "url": "https://github.com/markusamshove/vscode-natural"
