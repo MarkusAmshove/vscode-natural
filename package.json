@@ -1,6 +1,6 @@
 {
   "name": "vscode-natural",
-  "displayName": "vscode-natural",
+  "displayName": "VSCode Natural",
   "description": "Language Server Client for Natural driven by natls",
   "version": "0.2.1",
   "publisher": "markusamshove",
