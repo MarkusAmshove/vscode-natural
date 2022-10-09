@@ -1,5 +1,7 @@
 on:
   push:
+    branch:
+      - "main"
     tags:
       - "v*"
 
