@@ -81,7 +81,12 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "download-all": "./node_modules/.bin/gulp download-all",
+    "clean-server": "./node_modules/.bin/gulp clean-server",
+    "download-server": "./node_modules/.bin/gulp download-server",
+    "clean-jre": "./node_modules/.bin/gulp clean-jre",
+    "download-jre": "./node_modules/.bin/gulp download-jre"
   },
   "devDependencies": {
     "@types/vscode": "^1.59.0",
@@ -97,6 +102,11 @@
     "ts-loader": "^9.4.1",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
-    "@vscode/test-electron": "^2.1.5"
+    "gulp": "^4.0.2",
+    "gulp-decompress": "^3.0.0",
+    "gulp-download": "0.0.1",
+    "@vscode/test-electron": "^2.1.5",
+    "fs-extra": "^10.1.0",
+    "node-fetch": "^2.6.7"
   }
 }
