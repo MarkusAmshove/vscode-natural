@@ -2,7 +2,7 @@
   "name": "vscode-natural",
   "displayName": "vscode-natural",
   "description": "Language Server Client for Natural driven by natls",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "markusamshove",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "engines": {
-    "vscode": "^1.59.0"
+    "vscode": "^1.61.0"
   },
   "categories": [
     "Programming Languages",

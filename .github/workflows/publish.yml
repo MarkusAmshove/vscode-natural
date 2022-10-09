@@ -26,16 +26,14 @@ jobs:
       - name: Downlaod JRE Windows
         run: npx gulp download-jre --platform win32
 
-      - name: Build extension for Windows
-        run: npx vsce package --out vscode-natural-windows.vsix
+      - name: Package Windows extension
+        run: npx vsce package --target win32-x64
 
       - name: Downlaod JRE
         run: npx gulp download-jre --platform linux
 
-      - name: Build extension for Linux
-        run: npx vsce package --out vscode-natural-linux.vsix
-
-      - run: ls -la
+      - name: Package Linux extension
+        run: npx vsce package --target linux-x64
 
       - name: Publish extensions
         run: npx vsce publish --pat ${{ secrets.VS_MARKETPLACE_TOKEN }} --packagePath vscode-natural-*.vsix
