@@ -4,6 +4,10 @@
 
 Language Client implementation for [Natural Language Server (natls)](https://github.com/markusamshove/natls).
 
+To see features that currently work, have a look over at the [natls documentation](https://github.com/MarkusAmshove/natls/blob/main/docs/lsp-features.md).
+
+If you happen to use [NatUnit](https://github.com/AlteOldenburger/NatUnit), also have a look at [vscode-natunit](https://github.com/MarkusAmshove/vscode-natunit).
+
 ## Versioning
 
 Although this extension does have three numerics in its version number, it doesn't use semantic versioning.
