@@ -1,4 +1,5 @@
 import path = require('path');
+import { off } from 'process';
 import * as vscode from 'vscode';
 import {LanguageClient, LanguageClientOptions, ServerOptions} from "vscode-languageclient/node";
 import * as ls from 'vscode-languageserver-protocol';
@@ -9,6 +10,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	const config = vscode.workspace.getConfiguration('natls');
 	let javaPath = config.get<string | null>("overwrite.java_path", null);
 	let serverPath = config.get<string | null>("overwrite.server_path", null);
+	const debugMode = config.get<boolean>("debug", false);
 
 	if (!javaPath) {
 		javaPath = context.asAbsolutePath(path.join("jre", "bin", "java"));
@@ -18,14 +20,17 @@ export async function activate(context: vscode.ExtensionContext) {
 		serverPath = context.asAbsolutePath(path.join("server", "natls.jar"));
 	}
 
+	const debugFlags = ["-Xdebug", "-Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n,quiet=y"];
+	const debugParameter = debugMode ? debugFlags : [];
+
 	const serverOptions: ServerOptions = {
 		run: {
 			command: javaPath,
-			args: ["-jar", serverPath]
+			args: [...debugParameter, "-jar", serverPath]
 		},
 		debug: {
 			command: javaPath,
-			args: ["-Xdebug", "-Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n,quiet=y", "-jar", serverPath]
+			args: [...debugFlags, "-jar", serverPath]
 		}
 	};
 
