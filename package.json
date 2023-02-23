@@ -63,13 +63,20 @@
           "default": null,
           "description": "Path to Java executable to launch the Language Server with instead of the bundled one."
         },
-        "natls.server_path": {
+        "natls.overwrite.server_path": {
           "type": [
             "string",
             "null"
           ],
           "default": null,
           "description": "Path to the Language Server jar instead of the bundled one."
+        },
+        "natls.debug": {
+          "type": [
+            "boolean"
+          ],
+          "default": false,
+          "description": "Run server in debug mode."
         }
       }
     }
