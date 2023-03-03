@@ -51,7 +51,13 @@ jobs:
       - name: Package Windows extension
         run: npx vsce package --target win32-x64
 
-      - name: Downlaod JRE
+      - name: Downlaod JRE MacOS
+        run: npx gulp download-jre --platform darwin
+
+      - name: Package MacOS extension
+        run: npx vsce package --target darwin-x64
+
+      - name: Downlaod JRE Linux
         run: npx gulp download-jre --platform linux
 
       - name: Package Linux extension
