@@ -30,7 +30,8 @@ gulp.task('clean-jre', function (done) {
 gulp.task('download-jre', gulp.series('clean-jre', async function (done) {
 	const platformMap = {
 		'linux': 'linux-x86_64',
-		'win32': 'win32-x86_64'
+		'win32': 'win32-x86_64',
+		'darwin': 'macosx-x86_64'
 	};
 
 	let platform = argv.platform ?? process.platform;
