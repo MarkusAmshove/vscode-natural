@@ -69,7 +69,7 @@
     },
     "decide-on-branch-any-all-none": {
       "name": "keyword.control.natural",
-      "match": "(?i)\\b(any|all|none)\\b\\s*(value|values)?\\b"
+      "match": "(?i)\\b(any|(?<!with\\s*)all|none)\\b\\s*(value|values)?\\b"
     },
     "decide-end": {
       "name": "keyword.control.natural",
