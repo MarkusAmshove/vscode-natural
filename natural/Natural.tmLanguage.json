@@ -1,15 +1,27 @@
 {
   "scopeName": "source.natural",
   "patterns": [
+    { "include": "#decide-for"},
+    { "include": "#decide-for-branch"},
+    { "include": "#decide-on"},
+    { "include": "#decide-on-branch-value"},
+    { "include": "#decide-on-branch-any-all-none"},
+    { "include": "#definedata-level"},
+    { "include": "#escape-statement"},
+    { "include": "#if-statement"},
+    { "include": "#for-statement"},
+    { "include": "#condition-operator"},
+    { "include": "#decide-end"},
     { "include": "#define-subroutine"},
     { "include": "#keyword" },
     { "include": "#string-literal-double" },
     { "include": "#string-literal-single" },
     { "include": "#hex-literal" },
     { "include": "#system-vars" },
-    { "include": "#inline-comment"},
-    { "include": "#perform-subroutine"},
-    { "include": "#line-comment"}
+    { "include": "#inline-comment" },
+    { "include": "#perform-subroutine" },
+    { "include": "#line-comment" },
+    { "include": "#labels" }
   ],
   "repository": {
     "string-literal-double": {
@@ -27,9 +39,53 @@
       "end": "'",
       "name": "constant.numeric.natural"
     },
+    "definedata-level": {
+      "name": "support.constant.definedatalevel.natural",
+      "match": "^\\s*[0-9]+"
+    },
+    "if-statement": {
+      "name": "keyword.control.natural",
+      "match": "(?i)\\b(if|then|end-if|else|end-norec)\\b\\s*(no\\s*(records)?\\s*(found)?)?"
+    },
+    "condition-operator": {
+      "name": "keyword.operator.natural",
+      "match": "(?i)\\b(or|and|not|lt|le|gt|ge|eq|ne|specified|modified)\\b\\s*"
+    },
+    "decide-for": {
+      "name": "keyword.control.natural",
+      "match": "(?i)\\b(decide)\\b\\s*(for)\\b\\s*(every|first)?\\b\\s*(condition)\\b"
+    },
+    "decide-for-branch": {
+      "name": "keyword.control.natural",
+      "match": "(?i)\\b(when)\\b\\s*(none|all|any)?\\b"
+    },
+    "decide-on": {
+      "name": "keyword.control.natural",
+      "match": "(?i)\\b(decide)\\b\\s*(on)\\b\\s*(every|first)?\\b\\s*(value|values)?\\b\\s*(of)?\\b"
+    },
+    "decide-on-branch-value": {
+      "name": "keyword.control.natural",
+      "match": "(?i)\\b\\s*(value|values)\\b"
+    },
+    "decide-on-branch-any-all-none": {
+      "name": "keyword.control.natural",
+      "match": "(?i)\\b(any|all|none)\\b\\s*(value|values)?\\b"
+    },
+    "decide-end": {
+      "name": "keyword.control.natural",
+      "match": "(?i)\\b(end-decide)\\b"
+    },
+    "for-statement": {
+      "name": "keyword.control.natural",
+      "match": "(?i)^\\s*\\b(for|end-for)\\b"
+    },
+    "escape-statement": {
+      "name": "keyword.control.natural",
+      "match": "(?i)\\b(escape)\\s*(top|bottom|routine|module)\\s*(reposition|immediate)?\\b"
+    },
     "keyword": {
       "name": "keyword.natural",
-      "match": "(?i)\\b(?<!-)(?<!#)(entire|by|name|array|specified|view|variable|function|type|returns|and|numeric|optional|work|file|end-parse|true|end-result|leaving|not|condition|number|no|exp|full|replace|insert|doend|log|abs|any|repeat|set|dlogoff|download|break|values|divide|compress|update|sortkey|or|end-find|end-endpage|reduce|ignore|min|waste|end-define|end-function|substr|end|find|add|investigate|dnative|const|cos|endhoc|sgn|copy|redefine|define|multiply|assign|le|value|compose|false|pos|call|tan|error|close|parse|lt|with_cte|end-sort|eject|reset|show|local|terminate|val|backout|end-loop|reject|sum|create|sort|return|at|sin|settime|int|ne|global|end-select|else|delete|top|include|end-enddata|loop|old|suspend|skip|sqrt|rulevar|nmin|aver|process|select|map|using|end-histogram|max|newpage|on|off|key|named|control|pf1|pf2|pf3|pf4|pf5|pf6|pf7|pf8|pf9|initial|write|store|fetch|atn|ret|end-work|restore|get|limit|end-error|send|open|escape|compute|count|transfer|release|do|dynamic|rollback|end-read|display|upload|end-data|null-handle|ncount|resize|end-process|request|read|separate|eq|input|data|end-start|stack|reinput|incdic|inccont|end-if|when|end-before|while|end-endfile|end-toppage|incdir|parameter|obtain|calldbproc|end-browse|move|module|modified|subtract|dlogon|examine|substring|before|stop|run|end-break|export|end-subroutine|for|ge|print|browse|import|expand|all|passw|format|gt|end-norec|end-decide|end-for|callnat|end-all|options|retry|none|incmac|end-file|decide|init|histogram|naver|start|accept|commit|total|if|frac|end-repeat|until|to|into|with|delimiter|first|of|into|subroutine|giving|position)\\b(?!-)"
+      "match": "(?i)\\b(?<!-)(?<!#)(entire|by|name|array|specified|view|variable|function|type|printer|returns|and|rounded|numeric|for|optional|work|file|end-parse|true|end-result|leaving|not|number|no|exp|full|replace|insert|doend|log|abs|any|repeat|set|dlogoff|download|break|values|divide|compress|update|sortkey|or|end-find|end-endpage|reduce|ignore|min|waste|end-define|end-function|substr|end|find|add|investigate|dnative|const|cos|endhoc|sgn|copy|redefine|define|multiply|assign|le|value|compose|false|pos|call|tan|error|close|parse|with_cte|end-sort|eject|reset|show|local|terminate|val|backout|end-loop|reject|sum|create|sort|return|at|sin|settime|int|ne|global|end-select|else|delete|top|include|end-enddata|loop|old|suspend|skip|sqrt|rulevar|nmin|aver|process|select|map|using|end-histogram|max|newpage|on|off|key|named|control|pf1|pf2|pf3|pf4|pf5|pf6|pf7|pf8|pf9|initial|write|store|fetch|atn|ret|end-work|restore|get|limit|end-error|send|open|escape|compute|count|transfer|release|do|dynamic|rollback|end-read|display|upload|end-data|null-handle|ncount|resize|end-process|request|read|separate|eq|input|data|end-start|stack|reinput|incdic|inccont|end-if|end-before|while|end-endfile|end-toppage|incdir|parameter|obtain|calldbproc|end-browse|move|module|modified|subtract|dlogon|examine|substring|before|stop|run|end-break|export|end-subroutine|ge|print|browse|import|expand|all|passw|format|gt|end-norec|end-decide|end-for|callnat|end-all|options|retry|incmac|end-file|init|histogram|naver|start|accept|commit|total|if|frac|end-repeat|until|to|into|with|delimiter|of|into|subroutine|giving|position)\\b(?!-)"
     },
     "system-vars": {
       "name": "entity.name.function.natural",
@@ -71,6 +127,18 @@
           "name": "entity.name.function.natural"
         }
       }
+    },
+    "labels": {
+      "patterns": [
+        {
+          "name": "entity.name.tag.natural",
+          "match": "^\\s*(?i:[a-z0-9]+\\.)(?![\\w])"
+        },
+        {
+          "name": "entity.name.tag.reference.natural",
+          "match": "(?<=\\()(?i:[a-z0-9]+\\.)"
+        }
+      ]
     }
   }
 }
