@@ -14,7 +14,6 @@ export function registerDecoration(context: vscode.ExtensionContext) {
         gutterIconPath: context.asAbsolutePath('images/gutter-top.svg'),
     });
 
-
     let activeEditor = vscode.window.activeTextEditor;
 
     function updateDecorations() {

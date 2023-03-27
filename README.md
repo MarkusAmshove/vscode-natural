@@ -14,3 +14,15 @@ Although this extension does have three numerics in its version number, it doesn
 
 The first two digits (e.g. `0.2`) belong to the natls version it is bundled with. The last digit is used for any
 bugfix or enhancement that was done during the period of that natls version.
+
+## Additional features
+
+### Nesting level gutters
+
+![Nesting Gutters](docs/NestingGutters.png)
+
+The editor will show a gutter line for the main body (orange) and subroutine bodies (teal) to indicate if a statement is within a subroutine or the main code.
+
+This is helpful, because you can write statements in the main body of a module after defining subroutines.
+
+This can be disabled with `"natls.gutter.body": false`.
