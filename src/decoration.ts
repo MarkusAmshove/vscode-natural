@@ -22,7 +22,12 @@ export function registerDecoration(context: vscode.ExtensionContext) {
             return;
         }
 
-        decorateFile(activeEditor, toplevelDecorator, subroutineDecorator);
+        const config = vscode.workspace.getConfiguration('natls');
+        if (config.get('gutter.body', true)) {
+            decorateFile(activeEditor, toplevelDecorator, subroutineDecorator);
+        } else {
+            removeDecorations(activeEditor, toplevelDecorator, subroutineDecorator);
+        }
     }
 
     function triggerUpdate(throttle = false) {
@@ -120,3 +125,8 @@ function decorateFile(editor: vscode.TextEditor, toplevelDecorator: vscode.TextE
     editor.setDecorations(subroutineDecorator, subroutineDecorations);
     editor.setDecorations(toplevelDecorator, toplevelDecorations);
 }
+function removeDecorations(editor: vscode.TextEditor, toplevelDecorator: vscode.TextEditorDecorationType, subroutineDecorator: vscode.TextEditorDecorationType) {
+    editor.setDecorations(toplevelDecorator, []);
+    editor.setDecorations(subroutineDecorator, []);
+}
+
