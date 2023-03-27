@@ -17,7 +17,7 @@ export function registerDecoration(context: vscode.ExtensionContext) {
     let activeEditor = vscode.window.activeTextEditor;
 
     function updateDecorations() {
-        if (!activeEditor) {
+        if (!activeEditor || activeEditor.document.languageId !== 'natural') {
             return;
         }
 
