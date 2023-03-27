@@ -2,7 +2,7 @@
   "name": "vscode-natural",
   "displayName": "VSCode Natural",
   "description": "Language Server Client for Natural driven by natls",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "publisher": "markusamshove",
   "icon": "images/icon.png",
   "repository": {
@@ -77,6 +77,11 @@
           ],
           "default": false,
           "description": "Run server in debug mode."
+        },
+        "natls.gutter.body": {
+          "type": "boolean",
+          "default": true,
+          "description": "Indicate main program and subroutine bodies in the Gutter."
         }
       }
     }

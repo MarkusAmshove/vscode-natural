@@ -3,6 +3,7 @@ import { off } from 'process';
 import * as vscode from 'vscode';
 import {LanguageClient, LanguageClientOptions, ServerOptions} from "vscode-languageclient/node";
 import * as ls from 'vscode-languageserver-protocol';
+import { registerDecoration } from './decoration';
 
 let client: LanguageClient;
 
@@ -67,6 +68,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		vscode.commands.executeCommand('editor.action.showReferences', document.uri, vscodePosition, references);
 	}));
+
+	registerDecoration(context);
 }
 
 export async function deactivate() {
