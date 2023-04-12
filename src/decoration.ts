@@ -107,7 +107,7 @@ function decorateFile(editor: vscode.TextEditor, toplevelDecorator: vscode.TextE
 
         if (line.match(endSubroutinePattern)) {
             if (!isExternal || subroutineCounter === 1) {
-                subroutineDecorations.push({ range: new vscode.Range(new vscode.Position(subroutineStart!, 0), new vscode.Position(lineNr, 0)), hoverMessage: subroutineName});
+                subroutineDecorations.push({ range: new vscode.Range(new vscode.Position(subroutineStart!, 0), new vscode.Position(lineNr, 0))});
                 subroutineStart = undefined;
                 subroutineName = undefined;
             }
@@ -117,7 +117,7 @@ function decorateFile(editor: vscode.TextEditor, toplevelDecorator: vscode.TextE
 
         const trimmed = line.trimStart();
         if (trimmed.length > 0 && !line.startsWith("*") && !trimmed.startsWith("/*")) {
-            toplevelDecorations.push({ range: new vscode.Range(new vscode.Position(lineNr, 0), new vscode.Position(lineNr, 0)), hoverMessage: "Top level"});
+            toplevelDecorations.push({ range: new vscode.Range(new vscode.Position(lineNr, 0), new vscode.Position(lineNr, 0))});
         }
     }
 
