@@ -40,7 +40,8 @@
           ".NSA",
           ".NSC",
           ".NS7",
-          ".NSG"
+          ".NSG",
+          ".NSH"
         ],
         "configuration": "./natural/natural.configuration.json"
       }
