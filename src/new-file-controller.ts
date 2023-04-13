@@ -36,13 +36,23 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
         return;
     }
 
-    const name = await askForFilename();
+    let name = await askForFilename();
     if (!name) {
         return;
     }
+    name = name.toLocaleUpperCase();
 
-    const filePath = path.resolve(folderPathToPutFileInto, `${name.toLocaleUpperCase()}.${fileExtensions.get(type)}`);
-    const content = fileTemplate(name, type);
+    let subroutineName = '';
+    if (type === 'SUBROUTINE') {
+        const theSubroutineName = await askForSubroutineName();
+        if (!theSubroutineName) {
+            return;
+        }
+        subroutineName = theSubroutineName.toLocaleUpperCase();
+    }
+
+    const filePath = path.resolve(folderPathToPutFileInto, `${name}.${fileExtensions.get(type)}`);
+    const content = fileTemplate(name, type, subroutineName);
 
     await fsPromises.appendFile(filePath, content);
     const vscodeUri = vscode.Uri.file(filePath);
@@ -58,6 +68,7 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
 async function askForFilename() : Promise<string | undefined> {
     const name = await vscode.window.showInputBox(
         {
+            title: 'File name',
             prompt: 'Enter a file name',
             validateInput: async (input) => {
                 if (input.trim().length > 8) {
@@ -75,7 +86,7 @@ async function askForFilename() : Promise<string | undefined> {
     return name?.trim();
 }
 
-function fileTemplate(fileName: string, type: FileType) : string {
+function fileTemplate(fileName: string, type: FileType, subroutineName: string) : string {
     switch (type) {
         case 'SUBRPGORAM': {
             return `* >Natural Source Header 000000
@@ -110,7 +121,7 @@ END
 * :Mode S
 * :CP
 * <Natural Source Header
-DEFINE SUBROUTINE ${fileName}
+DEFINE SUBROUTINE ${subroutineName}
 
 IGNORE
 
@@ -184,4 +195,22 @@ function getLibraryNameForPath(libraryPath: string) {
     }
 
     return currentPath;
+}
+
+async function askForSubroutineName() {
+    const name = await vscode.window.showInputBox(
+        {
+            title: 'Subroutine name',
+            prompt: 'Enter a subroutine name',
+            validateInput: async (input) => {
+                if (input.trim().length === 0) {
+                    return {message: 'Subroutine name must have a length of at least one character', severity: vscode.InputBoxValidationSeverity.Error};
+                }
+            }
+        }
+    );
+    if (name && name.trim().length === 0) {
+        return undefined;
+    }
+    return name?.trim();
 }
