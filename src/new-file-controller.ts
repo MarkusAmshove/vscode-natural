@@ -36,11 +36,11 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
         return;
     }
 
-    let name = await askForFilename();
-    if (!name) {
+    let fileName = await askForFilename();
+    if (!fileName) {
         return;
     }
-    name = name.toLocaleUpperCase();
+    fileName = fileName.toLocaleUpperCase();
 
     let subroutineName = '';
     if (type === 'SUBROUTINE') {
@@ -51,8 +51,15 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
         subroutineName = theSubroutineName.toLocaleUpperCase();
     }
 
-    const filePath = path.resolve(folderPathToPutFileInto, `${name}.${fileExtensions.get(type)}`);
-    const content = fileTemplate(name, type, subroutineName);
+    const referableName = type === 'SUBROUTINE' ? subroutineName : fileName;
+    const referableModuleAlreadyExists = await referableNameExistsInLibrary(getLibraryNameForPath(folderPathToPutFileInto), referableName, client);
+    if (referableModuleAlreadyExists) {
+        vscode.window.showErrorMessage(`Module with referable name ${referableName} already exists in library.`)
+        return;
+    }
+
+    const filePath = path.resolve(folderPathToPutFileInto, `${fileName}.${fileExtensions.get(type)}`);
+    const content = fileTemplate(fileName, type, subroutineName);
 
     await fsPromises.appendFile(filePath, content);
     const vscodeUri = vscode.Uri.file(filePath);
@@ -194,7 +201,7 @@ function getLibraryNameForPath(libraryPath: string) {
         currentPath = path.parse(currentPath).dir;
     }
 
-    return currentPath;
+    return path.parse(lastPath).name;
 }
 
 async function askForSubroutineName() {
@@ -213,4 +220,9 @@ async function askForSubroutineName() {
         return undefined;
     }
     return name?.trim();
+}
+
+async function referableNameExistsInLibrary(libraryName: string, referableName: string, client: LanguageClient) : Promise<boolean> {
+    const response : {fileAlreadyExists: boolean} = await client.sendRequest('referableFileExists', { library: libraryName, referableName: referableName});
+    return response.fileAlreadyExists;
 }
