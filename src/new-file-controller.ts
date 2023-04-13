@@ -2,9 +2,9 @@ import path = require('path');
 import * as fs from 'fs';
 import { promises as fsPromises } from 'fs';
 import * as vscode from 'vscode';
-import { DidCreateFilesNotification, LanguageClient } from 'vscode-languageclient/node';
+import { DidChangeTextDocumentNotification, DidCreateFilesNotification, DidSaveTextDocumentNotification, LanguageClient } from 'vscode-languageclient/node';
 
-export type FileType = 'SUBRPGORAM' | 'PROGRAM' | 'SUBROUTINE' | 'FUNCTION' | 'COPYCODE' | 'GDA' | 'LDA' | 'PDA';
+export type FileType = 'SUBRPGORAM' | 'PROGRAM' | 'SUBROUTINE' | 'FUNCTION' | 'COPYCODE' | 'GDA' | 'LDA' | 'PDA' | 'TESTCASE';
 
 let fileExtensions = new Map<FileType, string>([
     ['SUBRPGORAM', 'NSN'],
@@ -14,7 +14,8 @@ let fileExtensions = new Map<FileType, string>([
     ['COPYCODE', 'NSC'],
     ['GDA', 'NSG'],
     ['LDA', 'NSL'],
-    ['PDA', 'NSA']
+    ['PDA', 'NSA'],
+    ['TESTCASE', 'NSN']
 ]);
 
 export async function createFile(args: vscode.Uri | undefined, type: FileType, client: LanguageClient) {
@@ -36,7 +37,10 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
         return;
     }
 
-    let fileName = await promptForInput('File name', 'Enter a file name', 8);
+    let fileName = type !== 'TESTCASE'
+        ? await promptForInput('File name', 'Enter a file name', {inputMaxLength: 8})
+        : await promptForInput('File name', 'Enter a file name', {inputMaxLength: 8, namePrefix: 'TC'});
+
     if (!fileName) {
         return;
     }
@@ -44,7 +48,7 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
 
     let subroutineName = '';
     if (type === 'SUBROUTINE') {
-        const theSubroutineName = await promptForInput('Subroutine name', 'Enter a subroutine name', undefined);
+        const theSubroutineName = await promptForInput('Subroutine name', 'Enter a subroutine name');
         if (!theSubroutineName) {
             return;
         }
@@ -65,24 +69,33 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
     const vscodeUri = vscode.Uri.file(filePath);
     await vscode.workspace.openTextDocument(vscodeUri);
     await vscode.window.showTextDocument(vscodeUri);
-    client.sendNotification(DidCreateFilesNotification.method, {
+    await client.sendNotification(DidCreateFilesNotification.method, {
         files: [{
             uri: client.code2ProtocolConverter.asUri(vscodeUri)
         }]
     });
+    await client.sendNotification(DidSaveTextDocumentNotification.method, {
+        textDocument: client.code2ProtocolConverter.asTextDocumentIdentifier(vscode.window.activeTextEditor!.document)
+    });
 }
 
-async function promptForInput(title: string, prompt: string, inputMaxLength: number | undefined) {
+type ValidationOptions = {inputMaxLength?: number, namePrefix?: string};
+async function promptForInput(title: string, prompt: string, validationOptions: ValidationOptions = {}) {
     const name = await vscode.window.showInputBox(
         {
             title: title,
             prompt: prompt,
             validateInput: (input) => {
-                if (inputMaxLength && input.trim().length > inputMaxLength) {
+                if (validationOptions.inputMaxLength && input.trim().length > validationOptions.inputMaxLength) {
                     return {message: 'Name must have a length of 8 or less', severity: vscode.InputBoxValidationSeverity.Error};
                 }
+
                 if (input.trim().length === 0) {
                     return {message: 'Name must have a length of at least one character', severity: vscode.InputBoxValidationSeverity.Error};
+                }
+
+                if (validationOptions.namePrefix && !input.trim().toLocaleUpperCase().startsWith(validationOptions.namePrefix)) {
+                    return {message: `Name must have prefix ${validationOptions.namePrefix}`, severity: vscode.InputBoxValidationSeverity.Error};
                 }
             }
         }
@@ -190,6 +203,38 @@ END-DEFINE
 /* :CP
 /* <Natural Source Header
 END-DEFINE
+`;
+        }
+        case 'TESTCASE': {
+            return `* >Natural Source Header 000000
+* :Mode S
+* :CP
+* <Natural Source Header
+DEFINE DATA
+
+PARAMETER USING NUTESTP
+
+LOCAL USING NUCONST
+LOCAL USING NUASSP
+END-DEFINE
+
+NUTESTP.FIXTURE := 'The fixture should'
+
+INCLUDE NUTCTEMP
+
+DEFINE SUBROUTINE TEST
+
+/***********************************************************************
+IF NUTESTP.TEST EQ 'Pass'
+/***********************************************************************
+
+ASSERT-LINE := *LINE; PERFORM ASSERT-NUM-EQUALS NUASSP 5 5
+
+END-IF
+
+END-SUBROUTINE
+
+END
 `;
         }
     };

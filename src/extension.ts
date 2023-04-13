@@ -102,6 +102,9 @@ function registerNewFileCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.subroutine', async (args) => {
 		await createNewFileByTemplate(args, 'SUBROUTINE');
 	}));
+	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.testcase', async (args) => {
+		await createNewFileByTemplate(args, 'TESTCASE');
+	}));
 }
 
 function createNewFileByTemplate(args: any, type: FileType) {

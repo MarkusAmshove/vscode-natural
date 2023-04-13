@@ -78,6 +78,10 @@
       {
         "command": "natural.file.new.subroutine",
         "title": "New Subroutine"
+      },
+      {
+        "command": "natural.file.new.testcase",
+        "title": "New NatUnit Testcase"
       }
     ],
     "submenus": [
@@ -125,6 +129,10 @@
         {
           "command": "natural.file.new.gda",
           "group": "2data@3"
+        },
+        {
+          "command": "natural.file.new.testcase",
+          "group": "3natunit@1"
         }
       ]
     },
