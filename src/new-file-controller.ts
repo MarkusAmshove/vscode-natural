@@ -108,6 +108,17 @@ async function promptForInput(title: string, prompt: string, validationOptions: 
     return name?.trim();
 }
 
+function moduleDocumentationHeader() {
+    return `/***********************************************************************
+/**
+/** TODO: Documentation
+/**
+/** :since ${new Date().toLocaleDateString()}
+/** :author ${require('os').userInfo().username}
+/**
+/***********************************************************************`;
+}
+
 function fileTemplate(fileName: string, type: FileType, subroutineName: string) : string {
     switch (type) {
         case 'SUBRPGORAM': {
@@ -115,6 +126,7 @@ function fileTemplate(fileName: string, type: FileType, subroutineName: string) 
 * :Mode S
 * :CP
 * <Natural Source Header
+${moduleDocumentationHeader()}
 DEFINE DATA
 LOCAL
 END-DEFINE
@@ -129,6 +141,7 @@ END
 * :Mode S
 * :CP
 * <Natural Source Header
+${moduleDocumentationHeader()}
 DEFINE DATA
 LOCAL
 END-DEFINE
@@ -143,6 +156,7 @@ END
 * :Mode S
 * :CP
 * <Natural Source Header
+${moduleDocumentationHeader()}
 DEFINE SUBROUTINE ${subroutineName}
 
 IGNORE
@@ -156,6 +170,7 @@ END
 * :Mode S
 * :CP
 * <Natural Source Header
+${moduleDocumentationHeader()}
 DEFINE FUNCTION ${fileName}
 
 RETURNS (L)
@@ -210,6 +225,7 @@ END-DEFINE
 * :Mode S
 * :CP
 * <Natural Source Header
+${moduleDocumentationHeader()}
 DEFINE DATA
 
 PARAMETER USING NUTESTP
