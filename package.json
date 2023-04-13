@@ -46,6 +46,88 @@
         "configuration": "./natural/natural.configuration.json"
       }
     ],
+    "commands": [
+      {
+        "command": "natural.file.new.subprogram",
+        "title": "New Subprogram"
+      },
+      {
+        "command": "natural.file.new.program",
+        "title": "New Program"
+      },
+      {
+        "command": "natural.file.new.copycode",
+        "title": "New Copycode"
+      },
+      {
+        "command": "natural.file.new.function",
+        "title": "New Function"
+      },
+      {
+        "command": "natural.file.new.gda",
+        "title": "New GDA"
+      },
+      {
+        "command": "natural.file.new.lda",
+        "title": "New LDA"
+      },
+      {
+        "command": "natural.file.new.pda",
+        "title": "New PDA"
+      },
+      {
+        "command": "natural.file.new.subroutine",
+        "title": "New Subroutine"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "natural.file.new",
+        "label": "New Natural file"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "submenu": "natural.file.new",
+          "group": "2_main@1"
+        }
+      ],
+      "natural.file.new" : [
+        {
+          "command": "natural.file.new.subprogram",
+          "group": "1mod@1"
+        },
+        {
+          "command": "natural.file.new.subroutine",
+          "group": "1mod@2"
+        },
+        {
+          "command": "natural.file.new.function",
+          "group": "1mod@3"
+        },
+        {
+          "command": "natural.file.new.program",
+          "group": "1mod@4"
+        },
+        {
+          "command": "natural.file.new.copycode",
+          "group": "1mod@5"
+        },
+        {
+          "command": "natural.file.new.lda",
+          "group": "2data@1"
+        },
+        {
+          "command": "natural.file.new.pda",
+          "group": "2data@2"
+        },
+        {
+          "command": "natural.file.new.gda",
+          "group": "2data@3"
+        }
+      ]
+    },
     "grammars": [
       {
         "language": "natural",
