@@ -36,7 +36,7 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
         return;
     }
 
-    let fileName = await askForFilename();
+    let fileName = await promptForInput('File name', 'Enter a file name', 8);
     if (!fileName) {
         return;
     }
@@ -44,7 +44,7 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
 
     let subroutineName = '';
     if (type === 'SUBROUTINE') {
-        const theSubroutineName = await askForSubroutineName();
+        const theSubroutineName = await promptForInput('Subroutine name', 'Enter a subroutine name', undefined);
         if (!theSubroutineName) {
             return;
         }
@@ -54,7 +54,7 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
     const referableName = type === 'SUBROUTINE' ? subroutineName : fileName;
     const referableModuleAlreadyExists = await referableNameExistsInLibrary(getLibraryNameForPath(folderPathToPutFileInto), referableName, client);
     if (referableModuleAlreadyExists) {
-        vscode.window.showErrorMessage(`Module with referable name ${referableName} already exists in library.`)
+        vscode.window.showErrorMessage(`Module with referable name ${referableName} already exists in library.`);
         return;
     }
 
@@ -72,24 +72,26 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
     });
 }
 
-async function askForFilename() : Promise<string | undefined> {
+async function promptForInput(title: string, prompt: string, inputMaxLength: number | undefined) {
     const name = await vscode.window.showInputBox(
         {
-            title: 'File name',
-            prompt: 'Enter a file name',
-            validateInput: async (input) => {
-                if (input.trim().length > 8) {
-                    return {message: 'File name must have a length of 8 or less', severity: vscode.InputBoxValidationSeverity.Error};
+            title: title,
+            prompt: prompt,
+            validateInput: (input) => {
+                if (inputMaxLength && input.trim().length > inputMaxLength) {
+                    return {message: 'Name must have a length of 8 or less', severity: vscode.InputBoxValidationSeverity.Error};
                 }
                 if (input.trim().length === 0) {
-                    return {message: 'File name must have a length of at least one character', severity: vscode.InputBoxValidationSeverity.Error};
+                    return {message: 'Name must have a length of at least one character', severity: vscode.InputBoxValidationSeverity.Error};
                 }
             }
         }
     );
+
     if (name && name.trim().length === 0) {
         return undefined;
     }
+
     return name?.trim();
 }
 
@@ -202,24 +204,6 @@ function getLibraryNameForPath(libraryPath: string) {
     }
 
     return path.parse(lastPath).name;
-}
-
-async function askForSubroutineName() {
-    const name = await vscode.window.showInputBox(
-        {
-            title: 'Subroutine name',
-            prompt: 'Enter a subroutine name',
-            validateInput: async (input) => {
-                if (input.trim().length === 0) {
-                    return {message: 'Subroutine name must have a length of at least one character', severity: vscode.InputBoxValidationSeverity.Error};
-                }
-            }
-        }
-    );
-    if (name && name.trim().length === 0) {
-        return undefined;
-    }
-    return name?.trim();
 }
 
 async function referableNameExistsInLibrary(libraryName: string, referableName: string, client: LanguageClient) : Promise<boolean> {
