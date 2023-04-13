@@ -18,11 +18,6 @@ let fileExtensions = new Map<FileType, string>([
 ]);
 
 export async function createFile(args: vscode.Uri | undefined, type: FileType, client: LanguageClient) {
-    const name = await vscode.window.showInputBox({title: "File name"});
-    if (!name) {
-        return;
-    }
-
     let folderPathToPutFileInto : string | undefined;
     if (!args) {
         if (vscode.window.activeTextEditor) {
@@ -41,6 +36,11 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
         return;
     }
 
+    const name = await askForFilename();
+    if (!name) {
+        return;
+    }
+
     const filePath = path.resolve(folderPathToPutFileInto, `${name.toLocaleUpperCase()}.${fileExtensions.get(type)}`);
     const content = fileTemplate(name, type);
 
@@ -53,6 +53,26 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
             uri: client.code2ProtocolConverter.asUri(vscodeUri)
         }]
     });
+}
+
+async function askForFilename() : Promise<string | undefined> {
+    const name = await vscode.window.showInputBox(
+        {
+            prompt: 'Enter a file name',
+            validateInput: async (input) => {
+                if (input.trim().length > 8) {
+                    return {message: 'File name must have a length of 8 or less', severity: vscode.InputBoxValidationSeverity.Error};
+                }
+                if (input.trim().length === 0) {
+                    return {message: 'File name must have a length of at least one character', severity: vscode.InputBoxValidationSeverity.Error};
+                }
+            }
+        }
+    );
+    if (name && name.trim().length === 0) {
+        return undefined;
+    }
+    return name?.trim();
 }
 
 function fileTemplate(fileName: string, type: FileType) : string {
@@ -153,4 +173,15 @@ END-DEFINE
 `;
         }
     };
+}
+
+function getLibraryNameForPath(libraryPath: string) {
+    let currentPath = libraryPath;
+    let lastPath = currentPath;
+    while (!currentPath.endsWith('Natural-Libraries')) {
+        lastPath = currentPath;
+        currentPath = path.parse(currentPath).dir;
+    }
+
+    return currentPath;
 }
