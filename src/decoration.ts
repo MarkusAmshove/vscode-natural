@@ -23,7 +23,7 @@ export function registerDecoration(context: vscode.ExtensionContext) {
 
         const config = vscode.workspace.getConfiguration('natls');
         if (config.get('gutter.body', true)) {
-            decorateFile(activeEditor, toplevelDecorator, subroutineDecorator);
+            decorateFile(activeEditor, toplevelDecorator, subroutineDecorator, config.get('gutter.topLevelOnly', true));
         } else {
             removeDecorations(activeEditor, toplevelDecorator, subroutineDecorator);
         }
@@ -66,7 +66,7 @@ const endDefinePattern = /^\s*END-DEFINE/;
 const defineSubroutinePattern = /^\s*DEFINE\s*SUBROUTINE\s*(.+)/;
 const endSubroutinePattern = /^\s*END-SUBROUTINE/;
 
-function decorateFile(editor: vscode.TextEditor, toplevelDecorator: vscode.TextEditorDecorationType, subroutineDecorator: vscode.TextEditorDecorationType) {
+function decorateFile(editor: vscode.TextEditor, toplevelDecorator: vscode.TextEditorDecorationType, subroutineDecorator: vscode.TextEditorDecorationType, topLevelOnly: boolean) {
     const subroutineDecorations : vscode.DecorationOptions[] = [];
     const toplevelDecorations : vscode.DecorationOptions[] = [];
 
@@ -115,13 +115,17 @@ function decorateFile(editor: vscode.TextEditor, toplevelDecorator: vscode.TextE
             continue;
         }
 
-        const trimmed = line.trimStart();
-        if (trimmed.length > 0 && !line.startsWith("*") && !trimmed.startsWith("/*")) {
-            toplevelDecorations.push({ range: new vscode.Range(new vscode.Position(lineNr, 0), new vscode.Position(lineNr, 0))});
+        if (!subroutineStart) {
+            const trimmed = line.trimStart();
+            if (trimmed.length > 0 && !line.startsWith("*") && !trimmed.startsWith("/*")) {
+                toplevelDecorations.push({ range: new vscode.Range(new vscode.Position(lineNr, 0), new vscode.Position(lineNr, 0))});
+            }
         }
     }
 
-    editor.setDecorations(subroutineDecorator, subroutineDecorations);
+    if (!topLevelOnly) {
+        editor.setDecorations(subroutineDecorator, subroutineDecorations);
+    }
     editor.setDecorations(toplevelDecorator, toplevelDecorations);
 }
 function removeDecorations(editor: vscode.TextEditor, toplevelDecorator: vscode.TextEditorDecorationType, subroutineDecorator: vscode.TextEditorDecorationType) {
