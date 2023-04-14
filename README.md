@@ -26,3 +26,6 @@ The editor will show a gutter line for the main body (orange) and subroutine bod
 This is helpful, because you can write statements in the main body of a module after defining subroutines.
 
 This can be disabled with `"natls.gutter.body": false`.
+
+The config `natls.gutter.topLevelOnly` (default `true`) configures if only the top level statements should have a gutter.
+To resemble the configuration of the screenshot, this has to be set to `false`.

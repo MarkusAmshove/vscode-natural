@@ -173,6 +173,11 @@
           "type": "boolean",
           "default": true,
           "description": "Indicate main program and subroutine bodies in the Gutter."
+        },
+        "natls.gutter.topLevelOnly": {
+          "type": "boolean",
+          "default": true,
+          "description": "Only show the gutter for top level statements"
         }
       }
     }
