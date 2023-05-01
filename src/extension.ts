@@ -1,9 +1,9 @@
 import path = require('path');
-import { off } from 'process';
 import * as vscode from 'vscode';
 import {LanguageClient, LanguageClientOptions, ServerOptions} from "vscode-languageclient/node";
 import * as ls from 'vscode-languageserver-protocol';
 import { registerDecoration } from './decoration';
+import { createFile, FileType } from './new-file-controller';
 
 let client: LanguageClient;
 
@@ -70,8 +70,43 @@ export async function activate(context: vscode.ExtensionContext) {
 	}));
 
 	registerDecoration(context);
+	registerNewFileCommands(context);
 }
 
 export async function deactivate() {
 	await client.stop();
+}
+
+function registerNewFileCommands(context: vscode.ExtensionContext) {
+	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.subprogram', async (args) => {
+		await createNewFileByTemplate(args, 'SUBRPGORAM');
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.program', async (args) => {
+		await createNewFileByTemplate(args, 'PROGRAM');
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.copycode', async (args) => {
+		await createNewFileByTemplate(args, 'COPYCODE');
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.function', async (args) => {
+		await createNewFileByTemplate(args, 'FUNCTION');
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.gda', async (args) => {
+		await createNewFileByTemplate(args, 'GDA');
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.lda', async (args) => {
+		await createNewFileByTemplate(args, 'LDA');
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.pda', async (args) => {
+		await createNewFileByTemplate(args, 'PDA');
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.subroutine', async (args) => {
+		await createNewFileByTemplate(args, 'SUBROUTINE');
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.testcase', async (args) => {
+		await createNewFileByTemplate(args, 'TESTCASE');
+	}));
+}
+
+function createNewFileByTemplate(args: any, type: FileType) {
+	return createFile(args, type, client);
 }
