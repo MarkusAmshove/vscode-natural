@@ -8,6 +8,7 @@
     { "include": "#decide-on-branch-any-all-none"},
     { "include": "#definedata-level"},
     { "include": "#escape-statement"},
+    { "include": "#selection-not-unique"},
     { "include": "#if-statement"},
     { "include": "#for-statement"},
     { "include": "#condition-operator"},
@@ -42,6 +43,10 @@
     "definedata-level": {
       "name": "support.constant.definedatalevel.natural",
       "match": "^\\s*[0-9]+"
+    },
+    "selection-not-unique": {
+      "name": "keyword.control.natural",
+      "match": "(?i)\\b(if)(\\s+(selection|not|unique|in|fields))+"
     },
     "if-statement": {
       "name": "keyword.control.natural",
