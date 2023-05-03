@@ -142,7 +142,7 @@
       "patterns": [
         {
           "name": "entity.name.tag.natural",
-          "match": "^\\s*(?i:[a-z0-9]+\\.)(?![\\w])"
+          "match": "^\\s*(?i:([a-z0-9]|-)+\\.)(?![\\w])"
         },
         {
           "name": "entity.name.tag.reference.natural",
