@@ -47,7 +47,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		progressOnInitialization: true
 	};
 
-	client = new LanguageClient('Natls', serverOptions, clientOptions);
+	client = new LanguageClient('natls', 'Natural Language Server', serverOptions, clientOptions);
 	await client.start();
 
 	context.subscriptions.push(new vscode.Disposable(() => client.stop()));
