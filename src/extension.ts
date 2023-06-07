@@ -42,7 +42,8 @@ export async function activate(context: vscode.ExtensionContext) {
 				vscode.workspace.createFileSystemWatcher("**/Natural-Libraries/**/*.*"),
 				vscode.workspace.createFileSystemWatcher("**/build/test-results/**/*.xml"),
 				vscode.workspace.createFileSystemWatcher("**/build/stow.log")
-			]
+			],
+			configurationSection: 'natls'
 		},
 		progressOnInitialization: true
 	};
