@@ -195,28 +195,28 @@ IGNORE
         }
         case 'GDA': {
             return `DEFINE DATA GLOBAL
-* >Natural Source Header 000000
-* :Mode S
-* :CP
-* <Natural Source Header
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
 END-DEFINE
 `;
         }
         case 'LDA': {
             return `DEFINE DATA LOCAL
-* >Natural Source Header 000000
-* :Mode S
-* :CP
-* <Natural Source Header
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
 END-DEFINE
 `;
         }
         case 'PDA': {
             return `DEFINE DATA PARAMETER
-* >Natural Source Header 000000
-* :Mode S
-* :CP
-* <Natural Source Header
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
 END-DEFINE
 `;
         }
