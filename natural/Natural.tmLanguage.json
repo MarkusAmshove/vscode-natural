@@ -126,7 +126,7 @@
     },
     "define-subroutine": {
       "name": "define.subroutine.natural",
-      "match": "(?i)\\b(define)\\s+(subroutine)\\s+([a-z0-9\\-]+)",
+      "match": "(?i)\\b(define)\\s+(subroutine)\\s+([a-z0-9\\-_]+)",
       "captures": {
         "1": {
           "name": "keyword.natural"
@@ -141,7 +141,7 @@
     },
     "perform-subroutine": {
       "name": "perform.subroutine.natural",
-      "match": "(?i)\\b(perform)\\s+([a-z0-9\\-]+)",
+      "match": "(?i)\\b(perform)\\s+([a-z0-9\\-_]+)",
       "captures": {
         "1": {
           "name": "keyword.natural"
