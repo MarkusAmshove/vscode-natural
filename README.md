@@ -15,6 +15,11 @@ Although this extension does have three numerics in its version number, it doesn
 The first two digits (e.g. `0.2`) belong to the natls version it is bundled with. The last digit is used for any
 bugfix or enhancement that was done during the period of that natls version.
 
+## Settings
+
+The [Language Server Configuration](https://github.com/MarkusAmshove/natls/blob/main/docs/lsp-config.md) can be configured with the same keys they're specified in in the linked documentation.
+E.g. setting `"natls.completion.qualify": true,` in your VSCode `settings.json` results in the Language Server always completing variables fully qualified where applicable.
+
 ## Additional features
 
 ### Nesting level gutters

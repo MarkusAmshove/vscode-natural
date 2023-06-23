@@ -2,7 +2,7 @@
   "name": "vscode-natural",
   "displayName": "VSCode Natural",
   "description": "Language Server Client for Natural driven by natls",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "publisher": "markusamshove",
   "icon": "images/icon.png",
   "repository": {
@@ -177,7 +177,29 @@
         "natls.gutter.topLevelOnly": {
           "type": "boolean",
           "default": true,
-          "description": "Only show the gutter for top level statements"
+          "description": "Only show the gutter for top level statements."
+        },
+        "natls.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the language server."
+        },
+        "natls.completion.qualify": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable this to always fully qualify completed variables where applicable.",
+          "scope": "application"
+        },
+        "natls.inlayhints.showAssignmentTargetType": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable this to show inlay hints for the target type of assignments.",
+          "scope": "application"
         }
       }
     }
