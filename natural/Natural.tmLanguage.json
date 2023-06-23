@@ -108,7 +108,7 @@
     },
     "keyword": {
       "name": "keyword.natural",
-      "match": "(?i)\\b(?<!-)(?<!#)(entire|by|name|array|attributes|specified|view|from|variable|function|type|printer|returns|and|rounded|numeric|for|optional|work|pc|file|end-parse|true|end-result|leaving|not|number|no|exp|full|replace|insert|doend|log|abs|any|repeat|set|dlogoff|download|break|values|divide|compress|update|sortkey|or|end-find|end-endpage|reduce|ignore|min|waste|end-define|end-prototype|end-function|substr|end|find|add|prototype|investigate|dnative|const|cos|endhoc|sgn|copy|redefine|define|multiply|assign|le|value|compose|false|pos|call|tan|error|close|parse|with_cte|end-sort|eject|reset|show|local|terminate|val|backout|end-loop|sum|create|sort|return|at|sin|settime|int|ne|global|end-select|else|delete|top|include|end-enddata|loop|old|suspend|skip|sqrt|rulevar|nmin|aver|process|select|map|using|end-histogram|max|newpage|on|off|key|named|control|pf1|pf2|pf3|pf4|pf5|pf6|pf7|pf8|pf9|initial|write|store|fetch|atn|ret|end-work|restore|get|end-error|send|open|escape|compute|count|transfer|release|do|dynamic|rollback|end-read|display|upload|end-data|null-handle|ncount|resize|end-process|request|read|separate|eq|input|data|end-start|stack|reinput|incdic|inccont|end-if|end-before|while|end-endfile|end-toppage|incdir|parameter|obtain|calldbproc|end-browse|move|module|modified|subtract|dlogon|examine|substring|before|stop|run|end-break|export|end-subroutine|ge|print|browse|import|expand|all|passw|format|gt|end-norec|end-decide|end-for|callnat|end-all|options|retry|incmac|end-file|init|histogram|naver|start|commit|total|if|frac|end-repeat|until|to|into|with|delimiter|of|into|subroutine|giving|position|transaction|mask|or|and|not|lt|le|gt|ge|eq|ne|space|leading|trailing)\\b(?!-)"
+      "match": "(?i)\\b(?<!-)(?<!#)(entire|by|name|array|attributes|specified|view|from|variable|function|type|printer|returns|and|rounded|numeric|for|optional|work|pc|file|end-parse|true|end-result|leaving|not|number|no|exp|full|replace|insert|doend|log|abs|any|repeat|set|dlogoff|download|break|values|divide|compress|update|sortkey|or|end-find|end-endpage|reduce|ignore|min|waste|end-define|end-prototype|end-function|substr|end|find|add|prototype|investigate|dnative|const|cos|endhoc|sgn|copy|redefine|define|multiply|assign|le|value|compose|false|pos|call|tan|error|close|parse|with_cte|end-sort|eject|reset|show|local|terminate|val|backout|end-loop|sum|create|sort|return|at|sin|settime|int|ne|global|end-select|else|delete|top|include|end-enddata|loop|old|suspend|skip|sqrt|rulevar|nmin|aver|process|select|map|using|end-histogram|max|newpage|on|off|key|named|control|pf1|pf2|pf3|pf4|pf5|pf6|pf7|pf8|pf9|initial|write|store|fetch|atn|ret|end-work|restore|get|end-error|send|open|escape|compute|count|transfer|release|do|dynamic|rollback|end-read|display|upload|end-data|null-handle|ncount|resize|end-process|request|read|separate|eq|input|data|end-start|stack|reinput|incdic|inccont|end-if|end-before|while|end-endfile|end-toppage|incdir|parameter|obtain|calldbproc|end-browse|move|module|modified|subtract|dlogon|examine|substring|before|stop|run|end-break|export|end-subroutine|ge|print|browse|import|expand|all|passw|format|gt|end-norec|end-decide|end-for|callnat|end-all|options|retry|incmac|end-file|init|histogram|naver|start|commit|total|if|frac|end-repeat|until|to|into|with|edited|right|left|justified|delimiters|delimiter|of|into|subroutine|giving|position|transaction|mask|or|and|not|lt|le|gt|ge|eq|ne|space|leading|trailing)\\b(?!-)"
     },
     "system-vars": {
       "name": "entity.name.function.natural",
@@ -126,7 +126,7 @@
     },
     "define-subroutine": {
       "name": "define.subroutine.natural",
-      "match": "(?i)\\b(define)\\s+(subroutine)\\s+([a-z0-9\\-]+)",
+      "match": "(?i)\\b(define)\\s+(subroutine)\\s+([a-z0-9\\-_]+)",
       "captures": {
         "1": {
           "name": "keyword.natural"
@@ -141,7 +141,7 @@
     },
     "perform-subroutine": {
       "name": "perform.subroutine.natural",
-      "match": "(?i)\\b(perform)\\s+([a-z0-9\\-]+)",
+      "match": "(?i)\\b(perform)\\s+([a-z0-9\\-_]+)",
       "captures": {
         "1": {
           "name": "keyword.natural"
