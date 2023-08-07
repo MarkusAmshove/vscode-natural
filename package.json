@@ -2,7 +2,7 @@
   "name": "vscode-natural",
   "displayName": "VSCode Natural",
   "description": "Language Server Client for Natural driven by natls",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "publisher": "markusamshove",
   "icon": "images/icon.png",
   "repository": {
@@ -97,7 +97,7 @@
           "group": "2_main@1"
         }
       ],
-      "natural.file.new" : [
+      "natural.file.new": [
         {
           "command": "natural.file.new.subprogram",
           "group": "1mod@1"
