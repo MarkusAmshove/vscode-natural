@@ -2,7 +2,7 @@
   "name": "vscode-natural",
   "displayName": "VSCode Natural",
   "description": "Language Server Client for Natural driven by natls",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "publisher": "markusamshove",
   "icon": "images/icon.png",
   "repository": {
@@ -41,9 +41,19 @@
           ".NSC",
           ".NS7",
           ".NSG",
-          ".NSH"
+          ".NSH",
+          ".NSM",
+          ".NST",
+          ".ERR"
         ],
-        "configuration": "./natural/natural.configuration.json"
+        "filenames": [
+          ".natural"
+        ],
+        "configuration": "./natural/natural.configuration.json",
+        "icon": {
+          "dark": "images/natural-dark.png",
+          "light": "images/natural-light.png"
+        }
       }
     ],
     "commands": [
