@@ -4,6 +4,7 @@ import {LanguageClient, LanguageClientOptions, ServerOptions} from "vscode-langu
 import * as ls from 'vscode-languageserver-protocol';
 import { registerDecoration } from './decoration';
 import { createFile, FileType } from './new-file-controller';
+import { NaturalStatementInlineCompletion } from './completion/inlinecompletion';
 
 let client: LanguageClient;
 
@@ -72,6 +73,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	registerDecoration(context);
 	registerNewFileCommands(context);
+	registerInlineCompletion(context);
 }
 
 export async function deactivate() {
@@ -110,4 +112,8 @@ function registerNewFileCommands(context: vscode.ExtensionContext) {
 
 function createNewFileByTemplate(args: any, type: FileType) {
 	return createFile(args, type, client);
+}
+
+function registerInlineCompletion(context: vscode.ExtensionContext) {
+	context.subscriptions.push(vscode.languages.registerInlineCompletionItemProvider({language: 'natural'}, new NaturalStatementInlineCompletion()));
 }
