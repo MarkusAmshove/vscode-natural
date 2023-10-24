@@ -15,7 +15,7 @@ const snippets : NaturalInlineCompletionSnippet[] = [
         snippet: 'COMPRESS NUMERIC ${1:#VAR} INTO ${2:#TARGET}'
     },
     {
-        trigger: 'separ',
+        trigger: 'sep',
         snippet: "SEPARATE ${1:#ALPHANUMERIC} INTO ${2:#GROUP} WITH DELIMITERS ${3:';'}"
     },
     {
@@ -96,28 +96,6 @@ export class NaturalStatementInlineCompletion implements vscode.InlineCompletion
                 ));
             }
         }
-
-        // if (statementToComplete.toLowerCase().startsWith("comp")) {
-        //     const rest = "COMPRESS".substring(lastWord.length);
-        //     result.items.push(
-        //         new vscode.InlineCompletionItem(
-        //             new vscode.SnippetString(`${lastWord}${rest} \${1:#VAR} INTO \${2:#TARGET}`),
-        //             new vscode.Range(
-        //                 position.with(undefined, position.character - lastWord.length),
-        //                 position
-        //             )
-        //         )
-        //     );
-        //     result.items.push(
-        //         new vscode.InlineCompletionItem(
-        //             new vscode.SnippetString(`${lastWord}${rest} \${1:#VAR} INTO \${2:#TARGET} LEAVING NO`),
-        //             new vscode.Range(
-        //                 position.with(undefined, position.character - lastWord.length),
-        //                 position
-        //             )
-        //         )
-        //     );
-        // }
 
         return result;
     }
