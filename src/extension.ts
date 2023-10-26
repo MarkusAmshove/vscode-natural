@@ -4,7 +4,7 @@ import {LanguageClient, LanguageClientOptions, ServerOptions} from "vscode-langu
 import * as ls from 'vscode-languageserver-protocol';
 import { registerDecoration } from './decoration';
 import { createFile, FileType } from './new-file-controller';
-import { NaturalStatementInlineCompletion } from './completion/inlinecompletion';
+import { NaturalStatementInlineCompletion } from './completion/inlinecompletionprovider';
 
 let client: LanguageClient;
 
