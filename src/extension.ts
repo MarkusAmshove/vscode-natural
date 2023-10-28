@@ -48,7 +48,8 @@ export async function activate(context: vscode.ExtensionContext) {
 			],
 			configurationSection: 'natls'
 		},
-		progressOnInitialization: true
+		progressOnInitialization: true,
+		initializationOptions: config,
 	};
 
 	client = new LanguageClient('natls', 'Natural Language Server', serverOptions, clientOptions);
