@@ -2,7 +2,7 @@ import { Event, ProviderResult, TreeDataProvider, TreeItem } from "vscode";
 
 export class FileStatusItem extends TreeItem {
     constructor(public label: string) {
-        super(label)
+        super(label);
     }
 }
 
