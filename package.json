@@ -180,6 +180,13 @@
           "default": false,
           "description": "Run server in debug mode."
         },
+        "natls.debugsuspend": {
+          "type": [
+            "boolean"
+          ],
+          "default": false,
+          "description": "Suspend the JVM on startup"
+        },
         "natls.gutter.body": {
           "type": "boolean",
           "default": true,

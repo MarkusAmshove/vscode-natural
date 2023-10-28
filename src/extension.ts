@@ -13,6 +13,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	let javaPath = config.get<string | null>("overwrite.java_path", null);
 	let serverPath = config.get<string | null>("overwrite.server_path", null);
 	const debugMode = config.get<boolean>("debug", false);
+	const debugSuspend = config.get<boolean>("debugsuspend", false);
 
 	if (!javaPath) {
 		javaPath = context.asAbsolutePath(path.join("jre", "bin", "java"));
@@ -22,7 +23,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		serverPath = context.asAbsolutePath(path.join("server", "natls.jar"));
 	}
 
-	const debugFlags = ["-Xdebug", "-Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n,quiet=y"];
+	const suspendFlag = debugSuspend ? 'y' : 'n';
+	const debugFlags = ["-Xdebug", `-Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=${suspendFlag},quiet=y`];
 	const debugParameter = debugMode ? debugFlags : [];
 
 	const serverOptions: ServerOptions = {
