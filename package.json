@@ -218,6 +218,12 @@
           "default": false,
           "description": "Enable this to show inlay hints for the target type of assignments.",
           "scope": "application"
+        },
+        "natls.initialization.async": {
+          "type": "boolean",
+          "default": false,
+          "description": "Uses the experimental asynchronous initialization for faster startup",
+          "scope": "application"
         }
       }
     }
