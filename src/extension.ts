@@ -7,6 +7,7 @@ import { createFile, FileType } from './new-file-controller';
 import { NaturalStatementInlineCompletion } from './completion/inlinecompletionprovider';
 
 let client: LanguageClient;
+let inlineCompletionProvider: vscode.Disposable | undefined;
 
 export async function activate(context: vscode.ExtensionContext) {
 	const config = vscode.workspace.getConfiguration('natls');
@@ -74,12 +75,30 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.commands.executeCommand('editor.action.showReferences', document.uri, vscodePosition, references);
 	}));
 
+	context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(e => {
+		if (!e.affectsConfiguration('natls')) {
+			return;
+		}
+		if (inlineCompletionProvider && !shouldRegisterInlineCompletion()) {
+			inlineCompletionProvider.dispose();
+			inlineCompletionProvider = undefined;
+		}
+
+		if (!inlineCompletionProvider && shouldRegisterInlineCompletion()) {
+			registerInlineCompletion();
+		}
+	}));
+
 	registerDecoration(context);
 	registerNewFileCommands(context);
-	registerInlineCompletion(context);
+
+	if (shouldRegisterInlineCompletion()) {
+		registerInlineCompletion();
+	}
 }
 
 export async function deactivate() {
+	inlineCompletionProvider?.dispose();
 	await client.stop();
 }
 
@@ -117,6 +136,11 @@ function createNewFileByTemplate(args: any, type: FileType) {
 	return createFile(args, type, client);
 }
 
-function registerInlineCompletion(context: vscode.ExtensionContext) {
-	context.subscriptions.push(vscode.languages.registerInlineCompletionItemProvider({language: 'natural'}, new NaturalStatementInlineCompletion()));
+function registerInlineCompletion() {
+	inlineCompletionProvider = vscode.languages.registerInlineCompletionItemProvider({language: 'natural'}, new NaturalStatementInlineCompletion());
+}
+
+function shouldRegisterInlineCompletion() {
+	const config = vscode.workspace.getConfiguration('natls.completion');
+	return config.get<boolean>('inline', true);
 }

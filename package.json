@@ -213,6 +213,12 @@
           "description": "Enable this to always fully qualify completed variables where applicable.",
           "scope": "application"
         },
+        "natls.completion.inline": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enables inline completion provider",
+          "scope": "application"
+        },
         "natls.inlayhints.showAssignmentTargetType": {
           "type": "boolean",
           "default": false,
