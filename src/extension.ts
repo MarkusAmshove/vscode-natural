@@ -5,6 +5,7 @@ import * as ls from 'vscode-languageserver-protocol';
 import { registerDecoration } from './decoration';
 import { createFile, FileType } from './new-file-controller';
 import { NaturalStatementInlineCompletion } from './completion/inlinecompletionprovider';
+import { goToTest } from './commands/gototest';
 
 let client: LanguageClient;
 let inlineCompletionProvider: vscode.Disposable | undefined;
@@ -74,6 +75,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.commands.executeCommand('editor.action.showReferences', document.uri, vscodePosition, references);
 	}));
 
+	context.subscriptions.push(vscode.commands.registerCommand('natls.codelens.goToTest', async (_u) => await goToTest(client)));
+
 	context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(e => {
 		if (!e.affectsConfiguration('natls')) {
 			return;
@@ -131,7 +134,7 @@ function registerNewFileCommands(context: vscode.ExtensionContext) {
 	}));
 }
 
-function createNewFileByTemplate(args: any, type: FileType) {
+function createNewFileByTemplate(args: any | undefined, type: FileType) {
 	return createFile(args, type, client);
 }
 
