@@ -93,6 +93,10 @@
       {
         "command": "natural.file.new.testcase",
         "title": "New NatUnit Testcase"
+      },
+      {
+        "command": "natls.codelens.goToTest",
+        "title": "Natural: Go to test"
       }
     ],
     "submenus": [
