@@ -6,7 +6,34 @@ Language Client implementation for [Natural Language Server (natls)](https://git
 
 To see features that currently work, have a look over at the [natls documentation](https://github.com/MarkusAmshove/natls/blob/main/docs/lsp-features.md).
 
-If you happen to use [NatUnit](https://github.com/AlteOldenburger/NatUnit), also have a look at [vscode-natunit](https://github.com/MarkusAmshove/vscode-natunit).
+## Prerequisites
+
+The Language Server needs to find a file called `.natural` within the Natural project folder which configures the libraries and step lib relationships.
+
+The expected structure looks like this:
+
+```
+ProjectDir
+|- .natural
+|- Natural-Libraries/
+```
+
+NaturalONE generates a `.natural` file if you press `Store new defaults` within the properties of a project.
+
+All thats needed from the `.natural` file are the `<LibrarySteplib>` entries, e.g.:
+
+```
+<LibrarySteplib>
+	<LibrarySteplibName>LIBONE</LibrarySteplibName>
+	<LibrarySteplibNSV>LIBONE</LibrarySteplibNSV>
+	<LibrarySteplibExtensions>0;</LibrarySteplibExtensions>
+</LibrarySteplib>
+<LibrarySteplib>
+	<LibrarySteplibName>LIBTWO</LibrarySteplibName>
+	<LibrarySteplibNSV>LIBONE</LibrarySteplibNSV>
+	<LibrarySteplibExtensions>1;LIBTWO[-1,-1];</LibrarySteplibExtensions>
+</LibrarySteplib>
+```
 
 ## Versioning
 
