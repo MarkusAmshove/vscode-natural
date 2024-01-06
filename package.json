@@ -60,43 +60,59 @@
     "commands": [
       {
         "command": "natural.file.new.subprogram",
-        "title": "New Subprogram"
+        "title": "New Subprogram",
+        "category": "Natural"
       },
       {
         "command": "natural.file.new.program",
-        "title": "New Program"
+        "title": "New Program",
+        "category": "Natural"
       },
       {
         "command": "natural.file.new.copycode",
-        "title": "New Copycode"
+        "title": "New Copycode",
+        "category": "Natural"
       },
       {
         "command": "natural.file.new.function",
-        "title": "New Function"
+        "title": "New Function",
+        "category": "Natural"
       },
       {
         "command": "natural.file.new.gda",
-        "title": "New GDA"
+        "title": "New GDA",
+        "category": "Natural"
       },
       {
         "command": "natural.file.new.lda",
-        "title": "New LDA"
+        "title": "New LDA",
+        "category": "Natural"
       },
       {
         "command": "natural.file.new.pda",
-        "title": "New PDA"
+        "title": "New PDA",
+        "category": "Natural"
       },
       {
         "command": "natural.file.new.subroutine",
-        "title": "New Subroutine"
+        "title": "New Subroutine",
+        "category": "Natural"
       },
       {
         "command": "natural.file.new.testcase",
-        "title": "New NatUnit Testcase"
+        "title": "New NatUnit Testcase",
+        "category": "Natural"
       },
       {
         "command": "natls.codelens.goToTest",
-        "title": "Natural: Go to test"
+        "title": "Natural: Go to test",
+        "category": "Natural"
+      },
+      {
+        "command": "natural.openMapPreviewToSide",
+        "title": "Open Map preview to side",
+        "category": "Natural",
+        "icon": "$(open-preview)"
       }
     ],
     "submenus": [
@@ -110,6 +126,13 @@
         {
           "submenu": "natural.file.new",
           "group": "2_main@1"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "natural.openMapPreviewToSide",
+          "when": "editorLangId === natural && resourceExtname =~ /.*\\.NSM/",
+          "group": "navigation"
         }
       ],
       "natural.file.new": [
