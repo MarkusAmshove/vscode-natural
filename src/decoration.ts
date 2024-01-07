@@ -1,4 +1,4 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 export function registerDecoration(context: vscode.ExtensionContext) {
 
@@ -6,24 +6,24 @@ export function registerDecoration(context: vscode.ExtensionContext) {
 
     const subroutineDecorator = vscode.window.createTextEditorDecorationType({
         isWholeLine: true,
-        gutterIconPath: context.asAbsolutePath('images/gutter-nested.svg'),
+        gutterIconPath: context.asAbsolutePath("images/gutter-nested.svg"),
     });
 
     const toplevelDecorator = vscode.window.createTextEditorDecorationType({
         isWholeLine: true,
-        gutterIconPath: context.asAbsolutePath('images/gutter-top.svg'),
+        gutterIconPath: context.asAbsolutePath("images/gutter-top.svg"),
     });
 
     let activeEditor = vscode.window.activeTextEditor;
 
     function updateDecorations() {
-        if (!activeEditor || activeEditor.document.languageId !== 'natural') {
+        if (!activeEditor || activeEditor.document.languageId !== "natural") {
             return;
         }
 
-        const config = vscode.workspace.getConfiguration('natls');
-        if (config.get('gutter.body', true)) {
-            decorateFile(activeEditor, toplevelDecorator, subroutineDecorator, config.get('gutter.topLevelOnly', true));
+        const config = vscode.workspace.getConfiguration("natls");
+        if (config.get("gutter.body", true)) {
+            decorateFile(activeEditor, toplevelDecorator, subroutineDecorator, config.get("gutter.topLevelOnly", true));
         } else {
             removeDecorations(activeEditor, toplevelDecorator, subroutineDecorator);
         }
@@ -70,9 +70,9 @@ function decorateFile(editor: vscode.TextEditor, toplevelDecorator: vscode.TextE
     const subroutineDecorations : vscode.DecorationOptions[] = [];
     const toplevelDecorations : vscode.DecorationOptions[] = [];
 
-    const lines = editor.document.getText().split('\n');
+    const lines = editor.document.getText().split("\n");
 
-    const isExternal = editor.document.fileName.endsWith('.NSS');
+    const isExternal = editor.document.fileName.endsWith(".NSS");
 
     let hasDefineData = false;
     let endDefineFound = false;

@@ -1,7 +1,7 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
-import { LanguageClient } from 'vscode-languageclient/node';
-import { createFile } from '../new-file-controller';
+import * as vscode from "vscode";
+import * as path from "path";
+import { LanguageClient } from "vscode-languageclient/node";
+import { createFile } from "../new-file-controller";
 
 export async function goToTest(client: LanguageClient) {
     const document = vscode.window.activeTextEditor?.document;
@@ -14,7 +14,7 @@ export async function goToTest(client: LanguageClient) {
     }
 
     const vscodePosition = client.protocol2CodeConverter.asPosition(document.positionAt(0));
-    const references = await client.getFeature('textDocument/references').getProvider(document)?.provideReferences(document, vscodePosition, { includeDeclaration: false }, new vscode.CancellationTokenSource().token);
+    const references = await client.getFeature("textDocument/references").getProvider(document)?.provideReferences(document, vscodePosition, { includeDeclaration: false }, new vscode.CancellationTokenSource().token);
 
     if (!references) {
         return;
@@ -28,7 +28,7 @@ export async function goToTest(client: LanguageClient) {
         if (createTestPrompt !== "Yes") {
             return;
         }
-        await createFile(undefined, 'TESTCASE', client);
+        await createFile(undefined, "TESTCASE", client);
         return;
     }
 
@@ -42,12 +42,12 @@ export async function goToTest(client: LanguageClient) {
     else {
         // There are more than one testcases, so show actual calling locations
         // to have a better context when chosing where to navigate to.
-        await vscode.commands.executeCommand('editor.action.showReferences', document.uri, vscodePosition, callingTests);
+        await vscode.commands.executeCommand("editor.action.showReferences", document.uri, vscodePosition, callingTests);
     }
 };
 
 async function navigateToSut(document: vscode.TextDocument, client: LanguageClient) {
-    const response: { uris: string[] } = await client.sendRequest('calledModules', { identifier: client.code2ProtocolConverter.asTextDocumentIdentifier(document) });
+    const response: { uris: string[] } = await client.sendRequest("calledModules", { identifier: client.code2ProtocolConverter.asTextDocumentIdentifier(document) });
     const paths = response.uris.map(u => client.protocol2CodeConverter.asUri(u).fsPath);
     const possibleSuts = paths.filter(p => couldBeSut(p));
 
