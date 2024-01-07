@@ -1,3 +1,4 @@
+import { basename } from "path";
 import * as vscode from "vscode";
 
 export function registerMapPreview(context: vscode.ExtensionContext) {
@@ -8,7 +9,8 @@ export function registerMapPreview(context: vscode.ExtensionContext) {
                 return;
             }
 
-            const panel = vscode.window.createWebviewPanel("natura.map", "Mappo", vscode.ViewColumn.Beside);
+            const mapName = basename(map.path);
+            const panel = vscode.window.createWebviewPanel("natura.map", mapName, vscode.ViewColumn.Beside);
             const preview = new MapPreview(panel, map);
         }
     ));
@@ -17,6 +19,8 @@ export function registerMapPreview(context: vscode.ExtensionContext) {
 class MapPreview {
     private inputThrottle: NodeJS.Timeout | undefined;
     private isFirstUpdate = true;
+    private lineSize = 80;
+    private pageSize = 24;
 
     constructor(private panel: vscode.WebviewPanel, private mapFile: vscode.Uri) {
         // const watcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(mapFile, '*'));
@@ -68,23 +72,48 @@ class MapPreview {
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HTML 5 Boilerplate</title>
-    <!--<link rel="stylesheet" href="style.css">-->
-    <style>
+    <title>Map Preview</title>
+    <style>${this.createStylesheet()}</style>
+  </head>
+  <body>
+    <div id="map">
+      <span>${this.emptyLine(80)}</span><br/>
+      <span>${this.emptyLine(80)}</span><br/>
+      <span>*****</span><span>In Zeile 1</span><span class="selected cutoff" title="#VARIABLE">#VAR</span><span>    </span><br/>
+      <span>    </span><span>In Zeile 2</span><span class="cutoff" title="#VARIABLE">#VAR</span><span>    </span><br/>
+      <span>${this.emptyLine(80)}</span><br/>
+      <span>${this.emptyLine(80)}</span><br/>
+      <span>${this.emptyLine(80)}</span><br/>
+      <span>${this.emptyLine(80)}</span><br/>
+      <span>${this.emptyLine(80)}</span><br/>
+      <span>${this.emptyLine(80)}</span><br/>
+      <span>${this.emptyLine(80)}</span><br/>
+      <span>${this.emptyLine(80)}</span><br/>
+      <span>${this.emptyLine(80)}</span><br/>
+      <span>${this.emptyLine(80)}</span><br/>
+    </div>
 
+    <pre>${content}</pre>
+  </body>
+</html>
+
+`;
+    }
+
+    private createStylesheet(): string {
+        const isDark = vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark;
+        return `
 body {
-    color: blue;
+    color: brown;
 }
 
 #map {
-	background: lightgray;
+	background: gray;
 	font-family: monospace;
     border: solid 1px;
-    border-color: black;
-    max-width: 80em;
-    max-height: 24em;
+    border-color: ${isDark ? "white" : "black"};
+    max-width: ${this.lineSize}em;
+    max-height: ${this.pageSize}em;
 }
 
 .selected {
@@ -97,22 +126,6 @@ body {
   display: inline-block;
   border-bottom: 1px dotted black;
 }
-    </style>
-  </head>
-  <body>
-    <div id="map">
-      <span>${this.emptyLine(80)}</span><br/>
-      <span>${this.emptyLine(80)}</span><br/>
-      <span>*****</span><span>In Zeile 1</span><span class="selected cutoff" title="#VARIABLE">#VAR</span><span>    </span><br/>
-      <span>    </span><span>In Zeile 2</span><span class="cutoff" title="#VARIABLE">#VAR</span><span>    </span><br/>
-      <span>${this.emptyLine(80)}</span><br/>
-      <span>${this.emptyLine(80)}</span><br/>
-    </div>
-
-    <pre>${content}</pre>
-  </body>
-</html>
-
 `;
     }
 
