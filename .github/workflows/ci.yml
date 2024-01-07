@@ -23,6 +23,8 @@ jobs:
       with:
         node-version: 14.x
     - run: npm install
+    - name: lint
+      run: npm run lint
     - run: xvfb-run -a npm test
       if: runner.os == 'Linux'
     - run: npm test
