@@ -1,21 +1,21 @@
-import path = require('path');
-import * as fs from 'fs';
-import { promises as fsPromises } from 'fs';
-import * as vscode from 'vscode';
-import { DidChangeTextDocumentNotification, DidCreateFilesNotification, DidSaveTextDocumentNotification, LanguageClient } from 'vscode-languageclient/node';
+import path = require("path");
+import * as fs from "fs";
+import { promises as fsPromises } from "fs";
+import * as vscode from "vscode";
+import { DidChangeTextDocumentNotification, DidCreateFilesNotification, DidSaveTextDocumentNotification, LanguageClient } from "vscode-languageclient/node";
 
-export type FileType = 'SUBRPGORAM' | 'PROGRAM' | 'SUBROUTINE' | 'FUNCTION' | 'COPYCODE' | 'GDA' | 'LDA' | 'PDA' | 'TESTCASE';
+export type FileType = "SUBRPGORAM" | "PROGRAM" | "SUBROUTINE" | "FUNCTION" | "COPYCODE" | "GDA" | "LDA" | "PDA" | "TESTCASE";
 
 let fileExtensions = new Map<FileType, string>([
-    ['SUBRPGORAM', 'NSN'],
-    ['PROGRAM', 'NSP'],
-    ['SUBROUTINE', 'NSS'],
-    ['FUNCTION', 'NS7'],
-    ['COPYCODE', 'NSC'],
-    ['GDA', 'NSG'],
-    ['LDA', 'NSL'],
-    ['PDA', 'NSA'],
-    ['TESTCASE', 'NSN']
+    ["SUBRPGORAM", "NSN"],
+    ["PROGRAM", "NSP"],
+    ["SUBROUTINE", "NSS"],
+    ["FUNCTION", "NS7"],
+    ["COPYCODE", "NSC"],
+    ["GDA", "NSG"],
+    ["LDA", "NSL"],
+    ["PDA", "NSA"],
+    ["TESTCASE", "NSN"]
 ]);
 
 export async function createFile(args: vscode.Uri | undefined, type: FileType, client: LanguageClient) {
@@ -37,25 +37,25 @@ export async function createFile(args: vscode.Uri | undefined, type: FileType, c
         return;
     }
 
-    let fileName = type !== 'TESTCASE'
-        ? await promptForInput('File name', 'Enter a file name', {inputMaxLength: 8})
-        : await promptForInput('File name', 'Enter a file name', {inputMaxLength: 8, namePrefix: 'TC'});
+    let fileName = type !== "TESTCASE"
+        ? await promptForInput("File name", "Enter a file name", {inputMaxLength: 8})
+        : await promptForInput("File name", "Enter a file name", {inputMaxLength: 8, namePrefix: "TC"});
 
     if (!fileName) {
         return;
     }
     fileName = fileName.toLocaleUpperCase();
 
-    let subroutineName = '';
-    if (type === 'SUBROUTINE') {
-        const theSubroutineName = await promptForInput('Subroutine name', 'Enter a subroutine name');
+    let subroutineName = "";
+    if (type === "SUBROUTINE") {
+        const theSubroutineName = await promptForInput("Subroutine name", "Enter a subroutine name");
         if (!theSubroutineName) {
             return;
         }
         subroutineName = theSubroutineName.toLocaleUpperCase();
     }
 
-    const referableName = type === 'SUBROUTINE' ? subroutineName : fileName;
+    const referableName = type === "SUBROUTINE" ? subroutineName : fileName;
     const referableModuleAlreadyExists = await referableNameExistsInLibrary(getLibraryNameForPath(folderPathToPutFileInto), referableName, client);
     if (referableModuleAlreadyExists) {
         vscode.window.showErrorMessage(`Module with referable name ${referableName} already exists in library.`);
@@ -87,11 +87,11 @@ async function promptForInput(title: string, prompt: string, validationOptions: 
             prompt: prompt,
             validateInput: (input) => {
                 if (validationOptions.inputMaxLength && input.trim().length > validationOptions.inputMaxLength) {
-                    return {message: 'Name must have a length of 8 or less', severity: vscode.InputBoxValidationSeverity.Error};
+                    return {message: "Name must have a length of 8 or less", severity: vscode.InputBoxValidationSeverity.Error};
                 }
 
                 if (input.trim().length === 0) {
-                    return {message: 'Name must have a length of at least one character', severity: vscode.InputBoxValidationSeverity.Error};
+                    return {message: "Name must have a length of at least one character", severity: vscode.InputBoxValidationSeverity.Error};
                 }
 
                 if (validationOptions.namePrefix && !input.trim().toLocaleUpperCase().startsWith(validationOptions.namePrefix)) {
@@ -114,14 +114,14 @@ function moduleDocumentationHeader() {
 /** TODO: Documentation
 /**
 /** :since ${new Date().toLocaleDateString()}
-/** :author ${require('os').userInfo().username}
+/** :author ${require("os").userInfo().username}
 /**
 /***********************************************************************`;
 }
 
 function fileTemplate(fileName: string, type: FileType, subroutineName: string) : string {
     switch (type) {
-        case 'SUBRPGORAM': {
+        case "SUBRPGORAM": {
             return `* >Natural Source Header 000000
 * :Mode S
 * :CP
@@ -136,7 +136,7 @@ IGNORE
 END
 `;
         }
-        case 'PROGRAM': {
+        case "PROGRAM": {
             return `* >Natural Source Header 000000
 * :Mode S
 * :CP
@@ -151,7 +151,7 @@ IGNORE
 END
 `;
         }
-        case 'SUBROUTINE': {
+        case "SUBROUTINE": {
             return `* >Natural Source Header 000000
 * :Mode S
 * :CP
@@ -165,7 +165,7 @@ END-SUBROUTINE
 END
 `;
         }
-        case 'FUNCTION': {
+        case "FUNCTION": {
             return `* >Natural Source Header 000000
 * :Mode S
 * :CP
@@ -185,7 +185,7 @@ END-FUNCTION
 END
 `;
         }
-        case 'COPYCODE': {
+        case "COPYCODE": {
             return `* >Natural Source Header 000000
 * :Mode S
 * :CP
@@ -193,7 +193,7 @@ END
 IGNORE
 `;
         }
-        case 'GDA': {
+        case "GDA": {
             return `DEFINE DATA GLOBAL
 /* >Natural Source Header 000000
 /* :Mode S
@@ -202,7 +202,7 @@ IGNORE
 END-DEFINE
 `;
         }
-        case 'LDA': {
+        case "LDA": {
             return `DEFINE DATA LOCAL
 /* >Natural Source Header 000000
 /* :Mode S
@@ -211,7 +211,7 @@ END-DEFINE
 END-DEFINE
 `;
         }
-        case 'PDA': {
+        case "PDA": {
             return `DEFINE DATA PARAMETER
 /* >Natural Source Header 000000
 /* :Mode S
@@ -220,7 +220,7 @@ END-DEFINE
 END-DEFINE
 `;
         }
-        case 'TESTCASE': {
+        case "TESTCASE": {
             return `* >Natural Source Header 000000
 * :Mode S
 * :CP
@@ -259,7 +259,7 @@ END
 function getLibraryNameForPath(libraryPath: string) {
     let currentPath = libraryPath;
     let lastPath = currentPath;
-    while (!currentPath.endsWith('Natural-Libraries')) {
+    while (!currentPath.endsWith("Natural-Libraries")) {
         lastPath = currentPath;
         currentPath = path.parse(currentPath).dir;
     }
@@ -268,6 +268,6 @@ function getLibraryNameForPath(libraryPath: string) {
 }
 
 async function referableNameExistsInLibrary(libraryName: string, referableName: string, client: LanguageClient) : Promise<boolean> {
-    const response : {fileAlreadyExists: boolean} = await client.sendRequest('referableFileExists', { library: libraryName, referableName: referableName});
+    const response : {fileAlreadyExists: boolean} = await client.sendRequest("referableFileExists", { library: libraryName, referableName: referableName});
     return response.fileAlreadyExists;
 }
