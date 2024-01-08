@@ -63,7 +63,6 @@ class MapPreview {
 
             if (element.sourceLine === line && element.sourceColumnStart <= character && element.sourceColumnEnd >= character) {
                 idToReveal = element.id;
-                console.log("Revealing:", idToReveal);
             }
         }
 
@@ -150,20 +149,15 @@ class MapPreview {
         window.addEventListener('message', event => {
             const message = event.data;
             if (message.kind === "reveal") {
-                console.log("Revealing", message.id);
                 let selectedElements = document.getElementsByClassName("selected");
                 if (selectedElements) {
                     Array.from(selectedElements).forEach(e => e.classList.remove("selected"));
                 }
 
                 const id = "element-" + message.id;
-                console.log("Looking for", id);
                 let selectedElement = document.getElementById(id);
                 if (selectedElement) {
-                    console.log("Element found");
                     selectedElement.classList.add("selected");
-                } else {
-                    console.log("Element not found");
                 }
             }
         });
