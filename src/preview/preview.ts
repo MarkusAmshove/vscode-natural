@@ -144,8 +144,10 @@ class MapPreview {
     <meta charset="UTF-8">
     <title>Map Preview</title>
     <style>${this.createStylesheet()}</style>
-  </head>
-  <script>
+    <script>
+        let fontSize = 100;
+        let fontIncrement = 25;
+
         window.addEventListener('message', event => {
             const message = event.data;
             if (message.kind === "reveal") {
@@ -161,11 +163,28 @@ class MapPreview {
                 }
             }
         });
-  </script>
+
+        function updateFontSize() {
+            document.getElementById("map").style.fontSize = fontSize + "%";
+        }
+
+        function increaseFontSize() {
+            fontSize += fontIncrement;
+            updateFontSize();
+        }
+
+        function decreaseFontSize() {
+            fontSize -= fontIncrement;
+            updateFontSize();
+        }
+    </script>
+  </head>
   <body>
     <div id="map">
       ${preview}
     </div>
+    <button onclick="increaseFontSize()">+</button>
+    <button onclick="decreaseFontSize()">-</button>
   </body>
 </html>
 
@@ -177,6 +196,7 @@ class MapPreview {
         return `
 body {
     color: brown;
+    white-space: nowrap;
 }
 
 #map {
