@@ -81,6 +81,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		if (!e.affectsConfiguration("natls")) {
 			return;
 		}
+
 		if (inlineCompletionProvider && !shouldRegisterInlineCompletion()) {
 			inlineCompletionProvider.dispose();
 			inlineCompletionProvider = undefined;
@@ -93,7 +94,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	registerDecoration(context);
 	registerNewFileCommands(context);
-	registerMapPreview(context);
+	registerMapPreview(context, client);
 
 	if (shouldRegisterInlineCompletion()) {
 		registerInlineCompletion();
