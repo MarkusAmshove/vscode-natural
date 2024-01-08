@@ -1,18 +1,18 @@
-import path = require('path');
-import * as vscode from 'vscode';
+import path = require("path");
+import * as vscode from "vscode";
 import {LanguageClient, LanguageClientOptions, ServerOptions} from "vscode-languageclient/node";
-import * as ls from 'vscode-languageserver-protocol';
-import { registerDecoration } from './decoration';
-import { createFile, FileType } from './new-file-controller';
-import { NaturalStatementInlineCompletion } from './completion/inlinecompletionprovider';
-import { goToTest } from './commands/gototest';
-import { registerMapPreview } from './preview/preview';
+import * as ls from "vscode-languageserver-protocol";
+import { registerDecoration } from "./decoration";
+import { createFile, FileType } from "./new-file-controller";
+import { NaturalStatementInlineCompletion } from "./completion/inlinecompletionprovider";
+import { goToTest } from "./commands/gototest";
+import { registerMapPreview } from "./preview/preview";
 
 let client: LanguageClient;
 let inlineCompletionProvider: vscode.Disposable | undefined;
 
 export async function activate(context: vscode.ExtensionContext) {
-	const config = vscode.workspace.getConfiguration('natls');
+	const config = vscode.workspace.getConfiguration("natls");
 	let javaPath = config.get<string | null>("overwrite.java_path", null);
 	let serverPath = config.get<string | null>("overwrite.server_path", null);
 	const debugMode = config.get<boolean>("debug", false);
@@ -26,7 +26,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		serverPath = context.asAbsolutePath(path.join("server", "natls.jar"));
 	}
 
-	const suspendFlag = debugSuspend ? 'y' : 'n';
+	const suspendFlag = debugSuspend ? "y" : "n";
 	const debugFlags = ["-Xdebug", `-Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=${suspendFlag},quiet=y`];
 	const debugParameter = debugMode ? debugFlags : [];
 
@@ -47,18 +47,18 @@ export async function activate(context: vscode.ExtensionContext) {
 			fileEvents: [
 				vscode.workspace.createFileSystemWatcher("**/Natural-Libraries/**/*.*"),
 			],
-			configurationSection: 'natls'
+			configurationSection: "natls"
 		},
 		progressOnInitialization: true,
 		initializationOptions: config,
 	};
 
-	client = new LanguageClient('natls', 'Natural Language Server', serverOptions, clientOptions);
+	client = new LanguageClient("natls", "Natural Language Server", serverOptions, clientOptions);
 	await client.start();
 
 	context.subscriptions.push(new vscode.Disposable(() => client.stop()));
 
-	context.subscriptions.push(vscode.commands.registerCommand('natls.codelens.showReferences', async (uri: string, position: ls.Range) => {
+	context.subscriptions.push(vscode.commands.registerCommand("natls.codelens.showReferences", async (uri: string, position: ls.Range) => {
 		const document = vscode.window.activeTextEditor?.document;
 		if(!document)
 		{
@@ -66,19 +66,19 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 
 		const vscodePosition = client.protocol2CodeConverter.asPosition(position.start);
-		const references = await client.getFeature('textDocument/references').getProvider(document)?.provideReferences(document, vscodePosition, {includeDeclaration: false}, new vscode.CancellationTokenSource().token);
+		const references = await client.getFeature("textDocument/references").getProvider(document)?.provideReferences(document, vscodePosition, {includeDeclaration: false}, new vscode.CancellationTokenSource().token);
 		if(!references)
 		{
 			return;
 		}
 
-		vscode.commands.executeCommand('editor.action.showReferences', document.uri, vscodePosition, references);
+		vscode.commands.executeCommand("editor.action.showReferences", document.uri, vscodePosition, references);
 	}));
 
-	context.subscriptions.push(vscode.commands.registerCommand('natls.codelens.goToTest', async (_u) => await goToTest(client)));
+	context.subscriptions.push(vscode.commands.registerCommand("natls.codelens.goToTest", async (_u) => await goToTest(client)));
 
 	context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(e => {
-		if (!e.affectsConfiguration('natls')) {
+		if (!e.affectsConfiguration("natls")) {
 			return;
 		}
 		if (inlineCompletionProvider && !shouldRegisterInlineCompletion()) {
@@ -106,32 +106,32 @@ export async function deactivate() {
 }
 
 function registerNewFileCommands(context: vscode.ExtensionContext) {
-	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.subprogram', async (args) => {
-		await createNewFileByTemplate(args, 'SUBRPGORAM');
+	context.subscriptions.push(vscode.commands.registerCommand("natural.file.new.subprogram", async (args) => {
+		await createNewFileByTemplate(args, "SUBRPGORAM");
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.program', async (args) => {
-		await createNewFileByTemplate(args, 'PROGRAM');
+	context.subscriptions.push(vscode.commands.registerCommand("natural.file.new.program", async (args) => {
+		await createNewFileByTemplate(args, "PROGRAM");
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.copycode', async (args) => {
-		await createNewFileByTemplate(args, 'COPYCODE');
+	context.subscriptions.push(vscode.commands.registerCommand("natural.file.new.copycode", async (args) => {
+		await createNewFileByTemplate(args, "COPYCODE");
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.function', async (args) => {
-		await createNewFileByTemplate(args, 'FUNCTION');
+	context.subscriptions.push(vscode.commands.registerCommand("natural.file.new.function", async (args) => {
+		await createNewFileByTemplate(args, "FUNCTION");
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.gda', async (args) => {
-		await createNewFileByTemplate(args, 'GDA');
+	context.subscriptions.push(vscode.commands.registerCommand("natural.file.new.gda", async (args) => {
+		await createNewFileByTemplate(args, "GDA");
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.lda', async (args) => {
-		await createNewFileByTemplate(args, 'LDA');
+	context.subscriptions.push(vscode.commands.registerCommand("natural.file.new.lda", async (args) => {
+		await createNewFileByTemplate(args, "LDA");
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.pda', async (args) => {
-		await createNewFileByTemplate(args, 'PDA');
+	context.subscriptions.push(vscode.commands.registerCommand("natural.file.new.pda", async (args) => {
+		await createNewFileByTemplate(args, "PDA");
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.subroutine', async (args) => {
-		await createNewFileByTemplate(args, 'SUBROUTINE');
+	context.subscriptions.push(vscode.commands.registerCommand("natural.file.new.subroutine", async (args) => {
+		await createNewFileByTemplate(args, "SUBROUTINE");
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('natural.file.new.testcase', async (args) => {
-		await createNewFileByTemplate(args, 'TESTCASE');
+	context.subscriptions.push(vscode.commands.registerCommand("natural.file.new.testcase", async (args) => {
+		await createNewFileByTemplate(args, "TESTCASE");
 	}));
 }
 
@@ -140,10 +140,10 @@ function createNewFileByTemplate(args: any | undefined, type: FileType) {
 }
 
 function registerInlineCompletion() {
-	inlineCompletionProvider = vscode.languages.registerInlineCompletionItemProvider({language: 'natural'}, new NaturalStatementInlineCompletion());
+	inlineCompletionProvider = vscode.languages.registerInlineCompletionItemProvider({language: "natural"}, new NaturalStatementInlineCompletion());
 }
 
 function shouldRegisterInlineCompletion() {
-	const config = vscode.workspace.getConfiguration('natls.completion');
-	return config.get<boolean>('inline', true);
+	const config = vscode.workspace.getConfiguration("natls.completion");
+	return config.get<boolean>("inline", true);
 }

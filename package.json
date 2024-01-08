@@ -270,6 +270,7 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
+    "lint-fix": "eslint --fix src --ext ts",
     "test": "npm run test:unit",
     "test:unit": "jest",
     "download-all": "./node_modules/.bin/gulp download-all",
