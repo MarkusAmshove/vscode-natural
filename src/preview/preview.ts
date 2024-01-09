@@ -300,6 +300,20 @@ body {
 .ad-z, .ad-r {
     text-align: right;
 }
+
+.ad-u {
+    text-decoration: underline;
+}
+
+.ad-b {
+    animation: blinker 1s step-start infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
 `;
     }
 
