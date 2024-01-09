@@ -87,13 +87,21 @@ class MapPreview {
     }
 
     private async updatePreview(): Promise<void> {
-        clearTimeout(this.inputThrottle);
+            clearTimeout(this.inputThrottle);
         this.inputThrottle = undefined;
-        this.isFirstUpdate = false;
 
         this.structure = await this.client.sendRequest<InputStructure>("inputStructure", { uri: this.client.code2ProtocolConverter.asUri(this.mapFile) });
 
-        this.panel.webview.html = this.renderHtml();
+        if (this.isFirstUpdate) {
+            this.panel.webview.html = this.renderHtml();
+            this.isFirstUpdate = false;
+        } else {
+            const preview = this.renderPreview();
+            this.panel.webview.postMessage({
+                kind: "update",
+                source: preview,
+            });
+        }
         // if (this.disposed) {
         //     return;
         // }
@@ -148,6 +156,7 @@ class MapPreview {
 
         window.addEventListener('message', event => {
             const message = event.data;
+            console.log("Got Message", message.kind);
             if (message.kind === "reveal") {
                 let selectedElements = document.getElementsByClassName("selected");
                 if (selectedElements) {
@@ -159,6 +168,11 @@ class MapPreview {
                 if (selectedElement) {
                     selectedElement.classList.add("selected");
                 }
+            }
+
+            if (message.kind === "update") {
+                console.log("Update");
+                document.getElementById("map").innerHTML = message.source;
             }
         });
 
