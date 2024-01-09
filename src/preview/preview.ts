@@ -50,6 +50,40 @@ class MapPreview {
             this.revealElement(event.selections[0].active.line, event.selections[0].active.character);
         });
 
+        panel.webview.onDidReceiveMessage(async m => {
+            if (!this.structure) {
+                return;
+            }
+
+            if (m.kind === "doubleclick" && m.target) {
+                const elementId: string = m.target;
+                const targetElement = this.structure.elements.find(e => e.kind === "operand" && e.id === Number.parseInt(elementId.replace("element-", ""))) as InputOperand | undefined;
+                if (!targetElement) {
+                    return;
+                }
+
+                const highlightElement = async (editor: vscode.TextEditor) => {
+                    await vscode.window.showTextDocument(editor.document, {
+                        selection: new vscode.Range(
+                            new vscode.Position(targetElement.sourceLine, targetElement.sourceColumnStart),
+                            new vscode.Position(targetElement.sourceLine, targetElement.sourceColumnEnd)
+                        ),
+                        viewColumn: editor.viewColumn,
+                    });
+                };
+
+                const editor = vscode.window.visibleTextEditors.find(e => this.isPreviewOf(e.document.uri));
+                if (editor) {
+                    await highlightElement(editor);
+                    return;
+                }
+
+                const document = await vscode.workspace.openTextDocument(this.mapFile);
+                const openedEditor = await vscode.window.showTextDocument(document, vscode.ViewColumn.Beside);
+                await highlightElement(openedEditor);
+            }
+        });
+
         this.updatePreview();
     }
 
@@ -151,6 +185,7 @@ class MapPreview {
     <title>Map Preview</title>
     <style>${this.createStylesheet()}</style>
     <script>
+        const vscode = acquireVsCodeApi();
         let fontSize = 100;
         let fontIncrement = 25;
 
@@ -174,6 +209,13 @@ class MapPreview {
                 console.log("Update");
                 document.getElementById("map").innerHTML = message.source;
             }
+        });
+
+        document.addEventListener("dblclick", e => {
+            vscode.postMessage({
+                kind: "doubleclick",
+                target: e.target.id,
+            })
         });
 
         function updateFontSize() {
