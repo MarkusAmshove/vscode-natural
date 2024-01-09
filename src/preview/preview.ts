@@ -250,7 +250,7 @@ body {
 }
 
 class InputLine {
-    private position: number = 0;
+    private position: number = 1;
     private content: string = "";
     private length: number = 0;
 
