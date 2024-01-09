@@ -309,6 +309,10 @@ body {
     animation: blinker 1s step-start infinite;
 }
 
+.ad-c {
+    font-style: italic;
+}
+
 @keyframes blinker {
     50% {
         opacity: 0;
