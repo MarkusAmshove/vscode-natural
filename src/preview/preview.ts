@@ -1,7 +1,7 @@
 import { basename } from "path";
 import * as vscode from "vscode";
 import { LanguageClient } from "vscode-languageclient/node";
-import { InputStructure } from "./previewTypes";
+import { InputOperand, InputStructure } from "./previewTypes";
 
 export function registerMapPreview(context: vscode.ExtensionContext, client: LanguageClient) {
     context.subscriptions.push(vscode.commands.registerCommand(
@@ -113,7 +113,7 @@ class MapPreview {
                     inputLine.writeSpaces(element.spaces);
                     break;
                 case "operand":
-                    inputLine.writeElement(element.operand, element.length, element.id);
+                    inputLine.writeOperand(element);
                     break;
                 case "tabs":
                     inputLine.reposition(element.tabs);
@@ -123,9 +123,7 @@ class MapPreview {
         lines.push(inputLine);
 
         for (let i = lines.length; i < 24; i++) {
-            const line = new InputLine();
-            line.writeElement(spaces(80));
-            lines.push(line);
+            lines.push(new InputLine());
         }
 
         return lines
@@ -204,18 +202,47 @@ body {
 	font-family: monospace;
     border: solid 1px;
     border-color: ${isDark ? "white" : "black"};
-    max-width: ${this.lineSize}em;
+}
+
+span {
+	font-family: monospace;
+	background: gray;
 }
 
 .selected {
-	border: solid 1px;
-	border-color: red;
+	border: solid 2px !important;
+	border-color: red !important;
 }
 
 .cutoff {
   position: relative;
   display: inline-block;
   border-bottom: 1px dotted black;
+}
+
+.operand-unknown, .operand-undefined {
+    color: white;
+}
+
+.operand-reference {
+    border: solid 1px;
+    border-color: black;
+}
+
+.ad-d, .operand-literal {
+    color: rgb(0,0,187);
+}
+
+.ad-i {
+    color: rgb(187,0,0);
+}
+
+.ad-l {
+    text-align: left;
+}
+
+.ad-z, .ad-r {
+    text-align: right;
 }
 `;
     }
@@ -241,20 +268,31 @@ class InputLine {
         this.content += `<span>${spaces(spacesToAdd)}`;
     }
 
-    writeElement(content: string, length: number | undefined = undefined, id: number | undefined = undefined) {
-        if (!length) {
-            length = content.length;
-        }
+    writeOperand(operand: InputOperand) {
+        const content = operand.operand;
+        const length = operand.length;
+        const id = operand.id;
 
         this.length += length;
         this.position += length;
         let contentToRender = content.substring(0, length);
 
-        let classes = "";
+        let classes = [];
         let title = "";
         if (content.length > contentToRender.length) {
-            classes += " cutoff";
+            classes.push("cutoff");
             title = content;
+        }
+
+        classes.push(`operand-${operand.type}`);
+
+        for (const attribute of operand.attributes) {
+            if (attribute.kind === "AD") {
+                for (let i = 0; i < attribute.value.length; i++) {
+                    classes.push(`ad-${attribute.value[i].toLowerCase()}`);
+                }
+            }
+            // ....
         }
 
         if (contentToRender.length < length) {
@@ -262,7 +300,7 @@ class InputLine {
         }
 
         const idAssign = id ? `id="element-${id}"` : "";
-        this.content += `<span ${idAssign} class="${classes}" title=${title}>${contentToRender}</span>`;
+        this.content += `<span ${idAssign} class="${classes.join(" ")}" title=${title}>${contentToRender}</span>`;
     }
 
     renderHtml() {

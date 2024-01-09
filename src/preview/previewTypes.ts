@@ -6,6 +6,7 @@ export type InputElement = InputOperand | InputNewLine | InputTabs | InputSpaces
 
 export type InputOperand = {
     kind: "operand";
+    type: "reference" | "literal" | "unknown";
     id: number;
     operand: string;
     length: number;
