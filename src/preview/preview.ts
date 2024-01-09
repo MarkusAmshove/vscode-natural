@@ -164,6 +164,7 @@ class MapPreview {
 
         function updateFontSize() {
             document.getElementById("map").style.fontSize = fontSize + "%";
+            document.getElementById("currentZoom").textContent = fontSize + "%";
         }
 
         function increaseFontSize() {
@@ -178,11 +179,14 @@ class MapPreview {
     </script>
   </head>
   <body>
+    <div id="zoom-area">
+        <button onclick="decreaseFontSize()">-</button>
+        <span id="currentZoom">100%</span>
+        <button onclick="increaseFontSize()">+</button>
+    </div>
     <div id="map">
       ${preview}
     </div>
-    <button onclick="increaseFontSize()">+</button>
-    <button onclick="decreaseFontSize()">-</button>
   </body>
 </html>
 
@@ -195,18 +199,14 @@ class MapPreview {
 body {
     color: brown;
     white-space: nowrap;
+	font-family: monospace;
 }
 
 #map {
 	background: gray;
-	font-family: monospace;
     border: solid 1px;
     border-color: ${isDark ? "white" : "black"};
     width: ${this.lineSize}ch;
-}
-
-span {
-	background: gray;
 }
 
 .selected {
