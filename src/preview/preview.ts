@@ -210,8 +210,8 @@ body {
 }
 
 .selected {
-	border: solid 2px !important;
-	border-color: red !important;
+	outline: solid 2px !important;
+	outline-color: red !important;
 }
 
 .cutoff {
@@ -225,8 +225,8 @@ body {
 }
 
 .operand-reference {
-    border: solid 1px;
-    border-color: black;
+    outline: solid 1px;
+    outline-color: black;
 }
 
 .ad-d, .operand-literal {
@@ -286,10 +286,15 @@ class InputLine {
 
         classes.push(`operand-${operand.type}`);
 
+        let isRightAligned = false;
         for (const attribute of operand.attributes) {
             if (attribute.kind === "AD") {
                 for (let i = 0; i < attribute.value.length; i++) {
-                    classes.push(`ad-${attribute.value[i].toLowerCase()}`);
+                    const value = attribute.value[i].toLowerCase();
+                    if (value === "r" || value === "z") {
+                        isRightAligned = true;
+                    }
+                    classes.push(`ad-${value}`);
                 }
             }
             // ....
@@ -297,7 +302,12 @@ class InputLine {
 
         if (contentToRender.length < length) {
             const spacesToAdd = length - contentToRender.length;
-            contentToRender += spaces(spacesToAdd);
+            const theSpaces = spaces(spacesToAdd);
+            if (isRightAligned) {
+                contentToRender = theSpaces + contentToRender;
+            } else {
+                contentToRender += theSpaces;
+            }
         }
 
         const idAssign = id ? `id="element-${id}"` : "";
