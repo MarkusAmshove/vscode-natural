@@ -202,10 +202,10 @@ body {
 	font-family: monospace;
     border: solid 1px;
     border-color: ${isDark ? "white" : "black"};
+    width: ${this.lineSize}ch;
 }
 
 span {
-	font-family: monospace;
 	background: gray;
 }
 
@@ -273,8 +273,8 @@ class InputLine {
         const length = operand.length;
         const id = operand.id;
 
-        this.length += length;
         this.position += length;
+        this.length += length;
         let contentToRender = content.substring(0, length);
 
         let classes = [];
@@ -296,7 +296,8 @@ class InputLine {
         }
 
         if (contentToRender.length < length) {
-            contentToRender += spaces(length - contentToRender.length);
+            const spacesToAdd = length - contentToRender.length;
+            contentToRender += spaces(spacesToAdd);
         }
 
         const idAssign = id ? `id="element-${id}"` : "";
@@ -312,5 +313,6 @@ class InputLine {
 }
 
 function spaces(spaces: number): string {
-    return "&emsp;".repeat(spaces);
+    // return "&emsp;".repeat(spaces);
+    return "&nbsp;".repeat(spaces);
 }
