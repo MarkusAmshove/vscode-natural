@@ -334,6 +334,8 @@ body {
 
 }
 
+const SPACE_IN_VIEW = "&nbsp;"
+
 class InputLine {
     private position: number = 1;
     private content: string = "";
@@ -350,7 +352,7 @@ class InputLine {
     writeSpaces(spacesToAdd: number) {
         this.length += spacesToAdd;
         this.position += spacesToAdd;
-        this.content += `<span>${spaces(spacesToAdd)}`;
+        this.content += `<span>${spaces(spacesToAdd)}</span>`;
     }
 
     writeOperand(operand: InputOperand) {
@@ -396,18 +398,17 @@ class InputLine {
         }
 
         const idAssign = id ? `id="element-${id}"` : "";
-        this.content += `<span ${idAssign} class="${classes.join(" ")}" title=${title}>${contentToRender}</span>`;
+        this.content += `<span ${idAssign} class="${classes.join(" ")}" title=${title}>${contentToRender.replace(/ /g, SPACE_IN_VIEW)}</span>`;
     }
 
     renderHtml() {
         if (this.content.length === 0) {
             this.content = spaces(1);
         }
-        return `<span>${this.content}</span><br/>`;
+        return `${this.content}<br/>`;
     }
 }
 
 function spaces(spaces: number): string {
-    // return "&emsp;".repeat(spaces);
-    return "&nbsp;".repeat(spaces);
+    return SPACE_IN_VIEW.repeat(spaces);
 }
