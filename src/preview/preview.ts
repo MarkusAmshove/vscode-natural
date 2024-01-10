@@ -17,6 +17,17 @@ export function registerMapPreview(context: vscode.ExtensionContext, client: Lan
             const preview = new MapPreview(panel, map, client);
         }
     ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(
+        "natls.previewInput",
+        (params: { uri: string, inputIndex: number }) => {
+            const uri = vscode.Uri.parse(params.uri);
+            const mapName = basename(uri.fsPath);
+            const panel = vscode.window.createWebviewPanel("natura.map", mapName, vscode.ViewColumn.Beside, { enableScripts: true });
+
+            const preview = new MapPreview(panel, uri, client, params.inputIndex);
+        }
+    ));
 }
 
 class MapPreview {
@@ -26,7 +37,7 @@ class MapPreview {
     private pageSize = 24;
     private structure: InputStructure = null!;
 
-    constructor(private panel: vscode.WebviewPanel, private mapFile: vscode.Uri, private client: LanguageClient) {
+    constructor(private panel: vscode.WebviewPanel, private mapFile: vscode.Uri, private client: LanguageClient, private inputIndex = 0) {
         // const watcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(mapFile, '*'));
         // watcher.onDidChange(uri => {
         //     if (this.isPreviewOf(uri)) {
@@ -124,7 +135,7 @@ class MapPreview {
             clearTimeout(this.inputThrottle);
         this.inputThrottle = undefined;
 
-        this.structure = await this.client.sendRequest<InputStructure>("inputStructure", { uri: this.client.code2ProtocolConverter.asUri(this.mapFile) });
+        this.structure = await this.client.sendRequest<InputStructure>("inputStructure", { uri: this.client.code2ProtocolConverter.asUri(this.mapFile), inputIndex: this.inputIndex });
 
         if (this.isFirstUpdate) {
             this.panel.webview.html = this.renderHtml();
