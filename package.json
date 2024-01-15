@@ -254,7 +254,7 @@
         },
         "natls.initialization.async": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "Uses the experimental asynchronous initialization for faster startup",
           "scope": "application"
         }
