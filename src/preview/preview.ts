@@ -33,8 +33,6 @@ export function registerMapPreview(context: vscode.ExtensionContext, client: Lan
 class MapPreview {
     private inputThrottle: NodeJS.Timeout | undefined;
     private isFirstUpdate = true;
-    private lineSize = 80;
-    private pageSize = 24;
     private structure: InputStructure = null!;
 
     constructor(private panel: vscode.WebviewPanel, private mapFile: vscode.Uri, private client: LanguageClient, private inputIndex = 0) {
@@ -175,7 +173,9 @@ class MapPreview {
         }
         lines.push(inputLine);
 
-        for (let i = lines.length; i < 24; i++) {
+        const config = vscode.workspace.getConfiguration("natls");
+        const pageSize = config.get<number>("maps.defaultLineSize", 24);
+        for (let i = lines.length; i < pageSize; i++) {
             lines.push(new InputLine());
         }
 
@@ -261,6 +261,8 @@ class MapPreview {
     }
 
     private createStylesheet(): string {
+        const config = vscode.workspace.getConfiguration("natls");
+        const lineSize = config.get<number>("maps.defaultLineSize", 80);
         const isDark = vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark;
         return `
 body {
@@ -273,7 +275,7 @@ body {
 	background: gray;
     border: solid 1px;
     border-color: ${isDark ? "white" : "black"};
-    width: ${this.lineSize}ch;
+    width: ${lineSize}ch;
 }
 
 .selected {

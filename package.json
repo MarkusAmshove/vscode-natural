@@ -257,6 +257,18 @@
           "default": true,
           "description": "Uses the experimental asynchronous initialization for faster startup",
           "scope": "application"
+        },
+        "natls.maps.defaultPageSize": {
+          "type": "number",
+          "default": 24,
+          "description": "Default page size of INPUT statements when no FORMAT is specified",
+          "scope": "application"
+        },
+        "natls.maps.defaultLineSize": {
+          "type": "number",
+          "default": 80,
+          "description": "Default line size of INPUT statements when no FORMAT is specified",
+          "scope": "application"
         }
       }
     }
