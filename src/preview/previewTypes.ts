@@ -2,7 +2,7 @@ export type InputStructure = {
     elements: InputElement[];
 };
 
-export type InputElement = InputOperand | InputNewLine | InputTabs | InputSpaces;
+export type InputElement = InputOperand | InputNewLine | InputColumn | InputSpaces;
 
 export type InputOperand = {
     kind: "operand";
@@ -21,10 +21,10 @@ export type InputNewLine = {
     id: number;
 };
 
-export type InputTabs = {
-    kind: "tabs";
+export type InputColumn = {
+    kind: "column_position";
     id: number;
-    tabs: number;
+    column: number;
 };
 
 export type InputSpaces = {

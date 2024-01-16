@@ -168,8 +168,8 @@ class MapPreview {
                 case "operand":
                     inputLine.writeOperand(element);
                     break;
-                case "tabs":
-                    inputLine.reposition(element.tabs);
+                case "column_position":
+                    inputLine.reposition(element.column);
                     break;
             }
         }
