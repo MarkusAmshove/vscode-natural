@@ -174,7 +174,7 @@ class MapPreview {
         lines.push(inputLine);
 
         const config = vscode.workspace.getConfiguration("natls");
-        const pageSize = config.get<number>("maps.defaultLineSize", 24);
+        const pageSize = config.get<number>("maps.defaultPageSize", 24);
         for (let i = lines.length; i < pageSize; i++) {
             lines.push(new InputLine());
         }
