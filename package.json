@@ -269,6 +269,12 @@
           "default": 80,
           "description": "Default line size of INPUT statements when no FORMAT is specified",
           "scope": "application"
+        },
+        "natls.maps.enablePreview": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or Disable the preview feature on INPUTs",
+          "scope": "application"
         }
       }
     }
