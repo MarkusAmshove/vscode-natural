@@ -30,6 +30,24 @@ jobs:
     - run: npm test
       if: runner.os != 'Linux'
 
+  test-jre-download:
+    runs-on: ubuntu-latest
+    name: Test JRE Download
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Downlaod JRE Windows
+        run: npx gulp download-jre --platform win32
+
+      - name: Downlaod JRE MacOS
+        run: npx gulp download-jre --platform darwin
+
+      - name: Downlaod JRE Linux
+        run: npx gulp download-jre --platform linux
+
   publish:
     needs: [build]
     if: ${{ startsWith(github.event.ref, 'refs/tags/v') && needs.build.result == 'success' }}
