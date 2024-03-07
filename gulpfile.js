@@ -7,7 +7,7 @@ const decompress = require('gulp-decompress');
 const {version} = require('./package.json');
 const argv = require('yargs').argv
 
-const JAVA_VERSION = '17';
+const JAVA_VERSION = '21';
 
 gulp.task('clean-server', function (done) {
 	ensureDirectoryDoesntExist('./server');
