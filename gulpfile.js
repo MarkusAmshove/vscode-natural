@@ -59,7 +59,7 @@ gulp.task('download-jre', gulp.series('clean-jre', async function (done) {
 
 	console.log(`Downloading JRE ${jreIdentifier}`);
 
-	const downloadUrl = `https://download.eclipse.org/justj/jres/17/downloads/latest/${jreIdentifier}`;
+	const downloadUrl = `https://download.eclipse.org/justj/jres/${JAVA_VERSION}/downloads/latest/${jreIdentifier}`;
 	download(downloadUrl)
 			.pipe(decompress({strip: 0}))
 			.pipe(gulp.dest('./jre/'));
