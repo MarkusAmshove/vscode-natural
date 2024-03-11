@@ -16,6 +16,10 @@ export function registerMapPreview(context: vscode.ExtensionContext, client: Lan
             const panel = vscode.window.createWebviewPanel("natura.map", mapName, vscode.ViewColumn.Beside, { enableScripts: true });
 
             const preview = new MapPreview(panel, map, client);
+            context.subscriptions.push(
+                panel,
+                preview
+            );
         }
     ));
 
@@ -27,38 +31,35 @@ export function registerMapPreview(context: vscode.ExtensionContext, client: Lan
             const panel = vscode.window.createWebviewPanel("natura.map", mapName, vscode.ViewColumn.Beside, { enableScripts: true });
 
             const preview = new MapPreview(panel, uri, client, params.inputIndex);
+            context.subscriptions.push(
+                panel,
+                preview
+            );
         }
     ));
 }
 
-class MapPreview {
+class MapPreview implements vscode.Disposable {
     private inputThrottle: NodeJS.Timeout | undefined;
     private isFirstUpdate = true;
     private structure: InputStructure = null!;
+    private disposables: vscode.Disposable[] = [];
 
     constructor(private panel: vscode.WebviewPanel, private mapFile: vscode.Uri, private client: LanguageClient, private inputIndex = 0) {
-        // const watcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(mapFile, '*'));
-        // watcher.onDidChange(uri => {
-        //     if (this.isPreviewOf(uri)) {
-
-        //     }
-        // });
-
-        // TODO: Dispose
-        vscode.workspace.onDidChangeTextDocument(event => {
+        panel.onDidDispose(() => this.dispose());
+        this.disposables.push(vscode.workspace.onDidChangeTextDocument(event => {
             if (this.isPreviewOf(event.document.uri)) {
                 this.refreshPreview();
             }
-        });
+        }));
 
-        // TODO: Dispose
-        vscode.window.onDidChangeTextEditorSelection(event => {
+        this.disposables.push(vscode.window.onDidChangeTextEditorSelection(event => {
             if (!this.isPreviewOf(event.textEditor.document.uri)) {
                 return;
             }
 
             this.revealElement(event.selections[0].active.line, event.selections[0].active.character);
-        });
+        }));
 
         panel.webview.onDidReceiveMessage(async m => {
             if (!this.structure) {
@@ -97,10 +98,14 @@ class MapPreview {
         this.updatePreview();
     }
 
+    dispose() {
+        this.disposables.forEach(d => d.dispose());
+    }
+
     private revealElement(line: number, character: number) {
 
         let idToReveal: number = -1;
-        for(const element of this.structure.elements) {
+        for (const element of this.structure.elements) {
             if (element.kind !== "operand") {
                 continue;
             }
@@ -131,7 +136,7 @@ class MapPreview {
     }
 
     private async updatePreview(): Promise<void> {
-            clearTimeout(this.inputThrottle);
+        clearTimeout(this.inputThrottle);
         this.inputThrottle = undefined;
 
         this.structure = await this.client.sendRequest<InputStructure>("inputStructure", { uri: this.client.code2ProtocolConverter.asUri(this.mapFile), inputIndex: this.inputIndex });
