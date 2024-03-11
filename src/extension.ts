@@ -6,6 +6,7 @@ import { registerDecoration } from "./decoration";
 import { createFile, FileType } from "./new-file-controller";
 import { NaturalStatementInlineCompletion } from "./completion/inlinecompletionprovider";
 import { goToTest } from "./commands/gototest";
+import { registerMapPreview } from "./preview/preview";
 
 let client: LanguageClient;
 let inlineCompletionProvider: vscode.Disposable | undefined;
@@ -80,6 +81,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		if (!e.affectsConfiguration("natls")) {
 			return;
 		}
+
 		if (inlineCompletionProvider && !shouldRegisterInlineCompletion()) {
 			inlineCompletionProvider.dispose();
 			inlineCompletionProvider = undefined;
@@ -92,6 +94,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	registerDecoration(context);
 	registerNewFileCommands(context);
+	registerMapPreview(context, client);
 
 	if (shouldRegisterInlineCompletion()) {
 		registerInlineCompletion();
