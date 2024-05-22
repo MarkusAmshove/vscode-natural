@@ -216,7 +216,7 @@
         },
         "natls.gutter.body": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Indicate main program and subroutine bodies in the Gutter."
         },
         "natls.gutter.topLevelOnly": {

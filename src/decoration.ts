@@ -22,7 +22,7 @@ export function registerDecoration(context: vscode.ExtensionContext) {
         }
 
         const config = vscode.workspace.getConfiguration("natls");
-        if (config.get("gutter.body", true)) {
+        if (config.get("gutter.body", false)) {
             decorateFile(activeEditor, toplevelDecorator, subroutineDecorator, config.get("gutter.topLevelOnly", true));
         } else {
             removeDecorations(activeEditor, toplevelDecorator, subroutineDecorator);
