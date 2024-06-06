@@ -121,7 +121,7 @@
     },
     "line-comment": {
       "name": "comment.line.natural",
-      "begin": "^\\*\\s",
+      "begin": "^\\*[\\s\\*]+",
       "end": "$"
     },
     "define-subroutine": {
