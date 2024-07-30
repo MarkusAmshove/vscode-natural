@@ -113,6 +113,11 @@
         "title": "Open Map preview to side",
         "category": "Natural",
         "icon": "$(open-preview)"
+      },
+      {
+        "command": "natls.insert.constant",
+        "title": "Insert Constant from LDA",
+        "category": "Natural"
       }
     ],
     "submenus": [

@@ -95,6 +95,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	registerDecoration(context);
 	registerNewFileCommands(context);
 	registerMapPreview(context, client);
+	registerInsertConstantCommand(context, client);
 
 	if (shouldRegisterInlineCompletion()) {
 		registerInlineCompletion();
@@ -104,6 +105,30 @@ export async function activate(context: vscode.ExtensionContext) {
 export async function deactivate() {
 	inlineCompletionProvider?.dispose();
 	await client.stop();
+}
+
+function registerInsertConstantCommand(context: vscode.ExtensionContext, client: LanguageClient) {
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand("natls.insert.constant", async (editor, _) => {
+		if (editor.document.languageId !== "natural") {
+			return;
+		}
+
+		type FoundConstant = {name: string, source: string};
+		const response : {constants : FoundConstant[]} = await client.sendRequest("findConstants", {identifier: client.code2ProtocolConverter.asTextDocumentIdentifier(editor.document)});
+		const chosenConst = await vscode.window.showQuickPick(
+			response.constants.map(c => ({label: `${c.name} (${c.source})`, type: vscode.QuickPickItemKind.Default, const: c})),
+			{canPickMany: false, title: "Chose Constant"}
+		);
+
+		if (!chosenConst) {
+			return;
+		}
+
+		// The edit from registerTextEditorCommand can't be used, because of the await from "showQuickPick"
+		await editor.edit(editBuilder => {
+			editor.selections.forEach(s => editBuilder.replace(s, chosenConst.const.name));
+		});
+	}));
 }
 
 function registerNewFileCommands(context: vscode.ExtensionContext) {
