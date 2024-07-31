@@ -113,11 +113,19 @@ function registerInsertConstantCommand(context: vscode.ExtensionContext, client:
 			return;
 		}
 
-		type FoundConstant = {name: string, source: string};
+		type FoundConstant = {name: string, source: string, value: string};
 		const response : {constants : FoundConstant[]} = await client.sendRequest("findConstants", {identifier: client.code2ProtocolConverter.asTextDocumentIdentifier(editor.document)});
 		const chosenConst = await vscode.window.showQuickPick(
-			response.constants.map(c => ({label: `${c.name} (${c.source})`, type: vscode.QuickPickItemKind.Default, const: c})),
-			{canPickMany: false, title: "Chose Constant"}
+			response.constants.map(c => (
+				{
+					label: `$(symbol-constant) ${c.name}`,
+					type: vscode.QuickPickItemKind.Default,
+					detail: c.value,
+					description: c.source,
+					const: c
+				}
+			)),
+			{canPickMany: false, title: "Chose Constant", matchOnDetail: true, matchOnDescription: true}
 		);
 
 		if (!chosenConst) {
