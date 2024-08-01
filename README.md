@@ -49,6 +49,14 @@ E.g. setting `"natls.completion.qualify": true,` in your VSCode `settings.json` 
 
 ## Additional features
 
+### Find and insert constant
+
+You can find a `Natural: Insert Constant` command in the command palette.
+
+This command will open a quick pick popup with all `CONST` variables from LDAs that are reachable from your current natural file.
+
+You can search through the variable name, LDA name or constant value in the popup. Pressing return inserts the constant into the editor.
+
 ### Nesting level gutters
 
 ![Nesting Gutters](docs/NestingGutters.png)
@@ -57,7 +65,7 @@ The editor will show a gutter line for the main body (orange) and subroutine bod
 
 This is helpful, because you can write statements in the main body of a module after defining subroutines.
 
-This can be disabled with `"natls.gutter.body": false`.
+This can be enabled with `"natls.gutter.body": true`.
 
 The config `natls.gutter.topLevelOnly` (default `true`) configures if only the top level statements should have a gutter.
 To resemble the configuration of the screenshot, this has to be set to `false`.
