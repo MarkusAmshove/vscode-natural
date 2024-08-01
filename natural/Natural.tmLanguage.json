@@ -22,8 +22,9 @@
     { "include": "#hex-literal" },
     { "include": "#system-vars" },
     { "include": "#inline-comment" },
-    { "include": "#perform-subroutine" },
+    { "include": "#inline-comment-workaround" },
     { "include": "#line-comment" },
+    { "include": "#perform-subroutine" },
     { "include": "#labels" }
   ],
   "repository": {
@@ -117,6 +118,11 @@
     "inline-comment": {
       "name": "comment.block.natural",
       "begin": "/\\*(?!\\)|:)",
+      "end": "$"
+    },
+    "inline-comment-workaround": {
+      "name": "comment.block.natural",
+      "begin": "^/\\*\\)",
       "end": "$"
     },
     "line-comment": {
