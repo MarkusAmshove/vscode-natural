@@ -44,13 +44,22 @@ jobs:
       - run: npm install --no-package-lock
 
       - name: Downlaod JRE Windows
-        run: npx gulp download-jre --platform win32
+        run: node ./build.mjs download-jre --platform win32
+
+      - name: Clear JRE
+        run: node ./build.mjs clean-jre
 
       - name: Downlaod JRE MacOS
-        run: npx gulp download-jre --platform darwin
+        run: node ./build.mjs download-jre --platform darwin
+
+      - name: Clear JRE
+        run: node ./build.mjs clean-jre
 
       - name: Downlaod JRE Linux
-        run: npx gulp download-jre --platform linux
+        run: node ./build.mjs download-jre --platform linux
+
+      - name: Clear JRE
+        run: node ./build.mjs clean-jre
 
   publish:
     needs: [build]
