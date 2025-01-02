@@ -21,8 +21,8 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 14.x
-    - run: npm install
+        node-version: 18.x
+    - run: npm ci
     - name: lint
       run: npm run lint
     - run: xvfb-run -a npm test
@@ -34,12 +34,14 @@ jobs:
     runs-on: ubuntu-latest
     name: Test JRE Download
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v1
+      - name: Install Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 18.x
 
-      - run: npm install
+      - uses: actions/checkout@v3
+
+      - run: npm ci
 
       - name: Downlaod JRE Windows
         run: npx gulp download-jre --platform win32
@@ -57,9 +59,10 @@ jobs:
     name: Release Extension
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Install Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 18.x
 
       - name: Build
         run: npm ci
