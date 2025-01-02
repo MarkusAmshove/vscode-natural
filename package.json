@@ -316,6 +316,7 @@
     "jest-junit": "^16.0.0",
     "jest-mock-vscode": "^2.1.0",
     "node-fetch": "^2.6.7",
+    "tar": "^7.4.3",
     "ts-jest": "^29.1.1",
     "ts-loader": "^9.4.1",
     "typescript": "^4.8.4",
