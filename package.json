@@ -24,7 +24,7 @@
   "dependencies": {
     "vscode-languageclient": "^8.0.0"
   },
-  "main": "./dist/extension.js",
+  "main": "./out/extension.js",
   "contributes": {
     "languages": [
       {
