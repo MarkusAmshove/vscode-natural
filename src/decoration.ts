@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 
 export function registerDecoration(context: vscode.ExtensionContext) {
 
-	let timeout: NodeJS.Timer | undefined = undefined;
+	let timeout: NodeJS.Timeout | undefined = undefined;
 
     const subroutineDecorator = vscode.window.createTextEditorDecorationType({
         isWholeLine: true,
