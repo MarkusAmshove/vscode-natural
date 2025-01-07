@@ -51,6 +51,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		},
 		progressOnInitialization: true,
 		initializationOptions: config,
+		diagnosticCollectionName: "natls",
 	};
 
 	client = new LanguageClient("natls", "Natural Language Server", serverOptions, clientOptions);
@@ -58,7 +59,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(new vscode.Disposable(() => client.stop()));
 
-	context.subscriptions.push(vscode.commands.registerCommand("natls.codelens.showReferences", async (uri: string, position: ls.Range) => {
+	context.subscriptions.push(vscode.commands.registerCommand("natls.codelens.showReferences", async (_uri: string, position: ls.Range) => {
 		const document = vscode.window.activeTextEditor?.document;
 		if(!document)
 		{
