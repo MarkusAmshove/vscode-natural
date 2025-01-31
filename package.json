@@ -291,11 +291,8 @@
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
     "vscode:prepublish": "npm run package",
     "package": "npm run check-types && node esbuild.js --production",
-
-
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "compile": "node esbuild.js",
+    "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
     "lint-fix": "eslint --fix src",
     "test": "npm run test:unit",
