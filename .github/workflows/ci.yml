@@ -46,20 +46,14 @@ jobs:
       - name: Downlaod JRE Windows
         run: node ./build.mjs download-jre --platform win32
 
-      - name: Clear JRE
-        run: node ./build.mjs clean-jre
-
-      - name: Downlaod JRE MacOS
+      - name: Downlaod JRE MacOS x64
         run: node ./build.mjs download-jre --platform darwin
 
-      - name: Clear JRE
-        run: node ./build.mjs clean-jre
+      - name: Downlaod JRE MacOS arm64
+        run: node ./build.mjs download-jre --platform darwin_arm64
 
       - name: Downlaod JRE Linux
         run: node ./build.mjs download-jre --platform linux
-
-      - name: Clear JRE
-        run: node ./build.mjs clean-jre
 
   publish:
     needs: [build]
@@ -85,11 +79,17 @@ jobs:
       - name: Package Windows extension
         run: npx vsce package --target win32-x64
 
-      - name: Downlaod JRE MacOS
+      - name: Downlaod JRE MacOS x64
         run: node ./build.mjs download-jre --platform darwin
 
-      - name: Package MacOS extension
+      - name: Package MacOS x64 extension
         run: npx vsce package --target darwin-x64
+
+      - name: Downlaod JRE MacOS arm64
+        run: node ./build.mjs download-jre --platform darwin_arm64
+
+      - name: Package MacOS arm64 extension
+        run: npx vsce package --target darwin-arm64
 
       - name: Downlaod JRE Linux
         run: node ./build.mjs download-jre --platform linux

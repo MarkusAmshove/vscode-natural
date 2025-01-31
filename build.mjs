@@ -7,7 +7,8 @@ const JAVA_VERSION = "21";
 const JAVA_PLATFORM = {
 	"linux": "linux-x86_64",
 	"win32": "win32-x86_64",
-	"darwin": "macosx-x86_64"
+	"darwin": "macosx-x86_64",
+	"darwin_arm64": "macosx-aarch64.tar.gz"
 };
 const JRE_DOWNLOAD_TARGET = "./jre/";
 const SERVER_DOWNLOAD_TARGET = "./server/";
@@ -108,10 +109,23 @@ async function downloadServer() {
 	console.log("Done");
 }
 
+function getCurrentPlatformIdentifier() {
+	const currentPlatform = process.platform;
+	if (currentPlatform !== "darwin") {
+		return currentPlatform;
+	}
+
+	if (process.arch === "arm64") {
+		return "darwin_arm64";
+	}
+
+	return currentPlatform;
+}
+
 const argv = yargs(process.argv.slice(2)).argv;
 
 const javaVersion = argv.java ?? JAVA_VERSION;
-const platform = argv.platform ?? process.platform;
+const platform = argv.platform ?? getCurrentPlatformIdentifier();
 const javaPlatform = JAVA_PLATFORM[platform];
 
 if (!javaPlatform) {
@@ -121,10 +135,10 @@ if (!javaPlatform) {
 }
 
 const shouldDownloadAll = process.argv.includes("download-all");
-const shouldCleanJRE = process.argv.includes("clean-jre");
 const shouldDownloadJRE = process.argv.includes("download-jre") || shouldDownloadAll;
-const shouldCleanServer = process.argv.includes("clean-server");
+const shouldCleanJRE = process.argv.includes("clean-jre") || shouldDownloadJRE;
 const shouldDownloadServer = process.argv.includes("download-server") || shouldDownloadAll;
+const shouldCleanServer = process.argv.includes("clean-server") || shouldDownloadServer;
 
 let commandFound = false;
 
