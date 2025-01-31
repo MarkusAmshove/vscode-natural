@@ -1,7 +1,6 @@
 .vscode/**
 .vscode-test/**
 .github/
-node_modules/**
 src/**
 .gitignore
 .yarnrc
@@ -11,3 +10,8 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 **/*.map
 **/*.ts
+node_modules/**
+!node_modules/vscode-jsonrpc/**
+!node_modules/vscode-languageclient/**
+!node_modules/vscode-languageserver-protocol/**
+!node_modules/vscode-languageserver-types/**
