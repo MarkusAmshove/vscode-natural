@@ -2,7 +2,7 @@
   "name": "vscode-natural",
   "displayName": "VSCode Natural",
   "description": "Language Server Client for Natural driven by natls",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "publisher": "markusamshove",
   "icon": "images/icon.png",
   "repository": {
@@ -308,7 +308,6 @@
     "@types/vscode": "^1.59.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
-    "@vscode/vsce": "^2.6.3",
     "eslint": "^9.16.0",
     "fs-extra": "^10.1.0",
     "jest": "^29.7.0",
