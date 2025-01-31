@@ -2,7 +2,7 @@
   "name": "vscode-natural",
   "displayName": "VSCode Natural",
   "description": "Language Server Client for Natural driven by natls",
-  "version": "0.15.2",
+  "version": "0.15.3",
   "publisher": "markusamshove",
   "icon": "images/icon.png",
   "repository": {
