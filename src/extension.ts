@@ -142,7 +142,7 @@ function registerInsertConstantCommand(context: vscode.ExtensionContext, client:
 
 function registerNewFileCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand("natural.file.new.subprogram", async (args) => {
-		await createNewFileByTemplate(args, "SUBRPGORAM");
+		await createNewFileByTemplate(args, "SUBPROGRAM");
 	}));
 	context.subscriptions.push(vscode.commands.registerCommand("natural.file.new.program", async (args) => {
 		await createNewFileByTemplate(args, "PROGRAM");
