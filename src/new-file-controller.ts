@@ -4,10 +4,10 @@ import { promises as fsPromises } from "fs";
 import * as vscode from "vscode";
 import { DidChangeTextDocumentNotification, DidCreateFilesNotification, DidSaveTextDocumentNotification, LanguageClient } from "vscode-languageclient/node";
 
-export type FileType = "SUBRPGORAM" | "PROGRAM" | "SUBROUTINE" | "FUNCTION" | "COPYCODE" | "GDA" | "LDA" | "PDA" | "TESTCASE";
+export type FileType = "SUBPROGRAM" | "PROGRAM" | "SUBROUTINE" | "FUNCTION" | "COPYCODE" | "GDA" | "LDA" | "PDA" | "TESTCASE";
 
 let fileExtensions = new Map<FileType, string>([
-    ["SUBRPGORAM", "NSN"],
+    ["SUBPROGRAM", "NSN"],
     ["PROGRAM", "NSP"],
     ["SUBROUTINE", "NSS"],
     ["FUNCTION", "NS7"],
@@ -121,7 +121,7 @@ function moduleDocumentationHeader() {
 
 function fileTemplate(fileName: string, type: FileType, subroutineName: string) : string {
     switch (type) {
-        case "SUBRPGORAM": {
+        case "SUBPROGRAM": {
             return `* >Natural Source Header 000000
 * :Mode S
 * :CP
